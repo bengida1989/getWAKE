@@ -27,9 +27,7 @@ What is it?
       >> WAKE 
 
 
-
 Developers
 ++++++++++
 
-Dr. Hadar Ben-Gida, 
-Prof. Roi Gurka
+Dr. Hadar Ben-Gida, Prof. Roi Gurka
