@@ -19,7 +19,8 @@ What is it?
   
 + to modify these pages:
 
-  - git clone git@github.com:openpiv/WAKE-GUI.git
+  - git clone https://github.com/OpenPIV/WAKE-GUI.git
+  - git clone https://github.com/bengida1989/WAKE-GUI.git
  
   - from Matlab shell run::
 
