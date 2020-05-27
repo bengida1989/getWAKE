@@ -22,7 +22,7 @@ Ben-Gida, Hadar; Gurka, Roi; Liberzon, Alex (2020): OpenPIV - WAKE-GUI Matlab To
 
 User's Manual
 ------------
-https://github.com/OpenPIV/WAKE-GUI/blob/master/%E2%80%8F%E2%80%8FWAKE-GUI-UsersManuel.pdf
+https://github.com/OpenPIV/WAKE-GUI/blob/master/%E2%80%8F%E2%80%8FWAKE-GUI-UsersManual.pdf
   
 
 Support
