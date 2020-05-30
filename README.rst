@@ -22,7 +22,7 @@ Ben-Gida, Hadar; Gurka, Roi; Liberzon, Alex (2020): OpenPIV - getWAKE Matlab Too
 
 User's Manual
 ------------
-https://github.com/OpenPIV/getWAKE/blob/master/%E2%80%8F%E2%80%8FgetWAKE-UsersManual.pdf
+https://github.com/bengida1989/getWAKE/blob/master/%E2%80%8F%E2%80%8FgetWAKE-UsersManual.pdf
   
 
 Support
