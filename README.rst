@@ -1,4 +1,4 @@
-WAKE-GUI Toolbox
+getWAKE Toolbox
 +++++++++++++++++++++++++++++++++++++++++++++++++
 .. image:: getWAKE_capabilities.JPG
 
