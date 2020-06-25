@@ -5,7 +5,7 @@ getWAKE Toolbox
 What is it?
 ------------
 
-+ getWAKE (v1.6) is a collection of Matlab subroutines and GUI for post-processing of bluff-bodies wake data measured using Particle Image Velocimetry (PIV), and analyzed by OpenPIV (or other) software. 
++ getWAKE (v1.7) is a collection of Matlab subroutines and GUI for post-processing of bluff-bodies wake data measured using Particle Image Velocimetry (PIV), and analyzed by OpenPIV (or other) software. 
 
 + getWAKE accepts PIV wake data as .mat files extracted from the OpenPIV-spatial-analysis-toolbox. Future version of the code will also support .vec files. 
 
