@@ -67,13 +67,13 @@
 \begin{document}
 
 \ifpdf
-\graphicspath{{Images/}}
+\graphicspath{{./Images/}}
 \fi
 
 \maketitle
 \thispagestyle{empty}
 
-\vspace{10mm} %5mm vertical space
+\vspace{2mm} %5mm vertical space
 
 \begin{figure}[ht!]
 	\centering
@@ -92,7 +92,7 @@
 
 \href{https://github.com/OpenPIV/getWAKE}{\textit{get}WAKE v1.6} is a collection of Matlab subroutines and GUI for post-processing of time-resolved wake data (velocity vector maps) measured using Particle Image Velocimetry (PIV), and analyzed by OpenPIV (or other) software. 
 \textit{get}WAKE accepts the PIV wake data as .mat files extracted from the \href{https://github.com/OpenPIV/openpiv-spatial-analysis-toolbox}{OpenPIV spatial analysis toolbox}.
-\textit{get}WAKE allows the user to re-construct a full unsteady wake image from a set of PIV images recorded behind bodies/birds using a cross-correlation algorithm.
+\textit{get}WAKE allows the user to re-construct a full unsteady wake image from a set of PIV images recorded behind stationary/moving bluff bodies using a cross-correlation algorithm.
 The \textit{get}WAKE can also be used for estimation of drag and cumulative circulatory lift forces from the wake data, thus enabling the user to estimate the loads exerted on the body generating the wake. 
 To cite this software, please use the following:
 Ben-Gida, Hadar; Gurka, Roi; Liberzon, Alex (2020): OpenPIV - getWAKE Matlab Toolbox. \textit{figshare}. Software. \url{https://figshare.com/articles/OpenPIV_-_WAKE-GUI_Matlab_ToolBox/12331007}. The source code is available for download in the following GitHub page: \url{https://github.com/OpenPIV/getWAKE}. Contributions to the current version are more than welcome.
@@ -120,7 +120,7 @@ Once executed, the Graphical User Interface (GUI) of the \textit{get}WAKE is ope
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=\textwidth]{open_window.png}
+	\includegraphics[width=\textwidth]{openwindow}
 	\caption{First window of the \textit{get}WAKE}
 	\label{fig:GUI-open_window}
 \end{figure}	
@@ -133,7 +133,7 @@ The \textit{get}WAKE has of several sections (as depicted in \Cref{fig:GUI-secti
 \item {\color{red}\textbf{Upper menu bar}}: consists of four drop-down menus (``Inputs'', ``Wake'', ``Movie'' and ``Forces''), each has several selectable options that will be explained later in this tutorial.
 \item {\color{cyan}\textbf{Editor menu}}: consists of several tools for editing the GUI objects.
 \item {\color{blue}\textbf{PIV Data .mat file path}}: placed on the upper middle GUI region and represent the current .mat file path loaded in the GUI (by using the ``Load PIV Data .mat file'' button) for the wake post analysis. This .mat file consists of the PIV velocity vector maps, in a format exported by the \href{https://github.com/OpenPIV/openpiv-spatial-analysis-toolbox}{OpenPIV spatial analysis toolbox}.
-\item {\color{brown}\textbf{``Inputs''}}: includes input parameters for the wake analysis in terms of the PIV apparatus, bird characteristics and flow conditions.
+\item {\color{brown}\textbf{``Inputs''}}: includes input parameters for the wake analysis in terms of the PIV apparatus, bluff body characteristics and flow conditions.
 \item {\color{green}\textbf{``Processing''}}: consists of parameters relevant for generating the complete wake image from the various instantaneous PIV wake images.
 \item {\color{magenta}\textbf{``Wake Plot Options''}}: includes plotting parameters for controlling the presentation of the complete wake image, shown in the lower GUI region.
 \item {\color{orange}\textbf{``Forces''}}: includes parameters relevant for the estimation of forces from the wake.
@@ -142,12 +142,12 @@ The \textit{get}WAKE has of several sections (as depicted in \Cref{fig:GUI-secti
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=\textwidth]{‏‏open_window_marked_regions}
+	\includegraphics[width=\textwidth]{openwindow-marked}
 	\caption{\textit{get}WAKE sections}
 	\label{fig:GUI-sections}
 \end{figure}	
 
-	
+
 
 \subsection{Load PIV wake data}
 
@@ -164,7 +164,7 @@ Each wingbeat is composed of two phases: a downstroke phase, followed by an upst
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=\textwidth]{explorer_window_wake_data.png}
+	\includegraphics[width=\textwidth]{explorer-window-wake-data}
 	\caption{Explorer window for selecting the PIV velocity vecotr maps as .mat file}
 	\label{fig:GUI-select_mat_file}
 \end{figure}
@@ -197,43 +197,45 @@ The parameters listed in the GUI's ``Inputs'' section and included in the experi
 	\item \textbf{Laser dt [sec]}: time difference between the PIV laser's two pulses used to obtain one PIV velocity map from a pair of PIV images in [sec]. 
 	\item \textbf{p/cm [pixel/cm]}: pixel-to-centimeter scaling ratio of the PIV velocity maps.
 	\item \textbf{dt [sec]}: time difference between two consecutive PIV velocity maps in [sec].
-	\item \textbf{Chord [m]}: bird's reference chord length in [m].
-	\item \textbf{Wingspan (+ body) [m]}: bird's wingspan length, including the width of the body in [m].
-	\item \textbf{Body length [m]}: streamwise length of the bird's body in [m].
-	\item \textbf{Body width [m]}: lateral length (width) of the bird's body in [m].
-	\item \textbf{Weight [kg]}: bird's weight in [kg].
+	\item \textbf{Characteristic length [m]}: body's characteristic length in [m], used for normalizing the physical length scales.
+	\item \textbf{Wingspan (+ body) [m]}: body's wingspan length, including the width of the body in [m].
+	\item \textbf{Body length [m]}: streamwise length of the body in [m].
+	\item \textbf{Body width [m]}: lateral length (width) of the body in [m].
+	\item \textbf{Weight [kg]}: body's weight in [kg].
+	\item \textbf{Motion type}: determines the motion type conducted by the bluff body. There are two options: i) ``\textit{Stationary body}'' - for which the body generated the wake is stationary, or ii) ``\textit{Flapping wing}'' - for which the body generated the wake is moving in a somewhat cyclic manner that resembles that of flapping wingbeats, consisting of three phases; i.e., downstroke, transition and upstroke.
 	\item \textbf{FS Velocity [m/sec]}: Freestream velocity in [m/sec].
 	\item \textbf{Density [kg/$\mathrm{m^3}$]}: fluid density in [$\mathrm{kg/m^3}$].
 	\item \textbf{Viscosity [kg]}: fluid dynamic viscosity in [$\mathrm{Pa\cdot sec}$].
 \end{itemize}
 
 
-\subsection{Load kinematics database}\label{KIN-DB}
+\newpage
+\subsection{Load flapping wingbeats kinematics database}\label{KIN-DB}
 
-The kinematics database of the bird's wingbeats can be loaded by clicking the ``Set Kinematics Database'' button in the right side of the GUI, within the ``Forces'' section (see \Cref{fig:GUI-set-kinematics-database}). 
+In case the body performs a flapping wing type motion (consisting of downstroke, transition and upstroke phases), such as the one performed by a flapping wing or bird, the user can set the kinematics database of the flapping wingbeats by clicking the ``Set Flaping Wingbeats Kinematics'' button in the right side of the GUI, within the ``Forces'' section (see \Cref{fig:GUI-set-kinematics-database}). Please note that the ``Set Flaping Wingbeats Kinematics'' button will only be available if the ``\textit{Flapping wing}'' motion type is selected for the body.
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.71\textwidth]{set-kinematics-database}
-	\caption{Set kinematics database button}
+	\includegraphics[width=0.9\textwidth]{set-kinematics-database}
+	\caption{Set flapping wingbeats kinematics database button}
 	\label{fig:GUI-set-kinematics-database}
 \end{figure}
 
-\newpage
-This action will open the ``Set Kinematics Info'' window (see \Cref{fig:GUI-kinematics-database-window}), in which the user can edit, load, export and save the kinematics information of the bird in terms of the downstroke, transition and upstroke phases.
-Each row in the database correspond to a certain wingbeat in the bird's flight. 
-The numbers entered underneath each column (downstroke | transition | upstroke) corresponds to the PIV velocity vector map number in the wake data lodaed to the \textit{get}WAKE that correlates with the specific flight phase.
+
+This action will open the ``Set Kinematics Info'' window (see \Cref{fig:GUI-kinematics-database-window}), in which the user can edit, load, export and save the flapping wingbeats kinematics information of the body in terms of the downstroke, transition and upstroke phases.
+Each row in the database correspond to a certain wingbeat performed by the moving body. 
+The numbers entered underneath each column (downstroke | transition | upstroke) corresponds to the PIV velocity vector map number in the wake data lodaed to the \textit{get}WAKE that correlates with the specific phase.
+
+For example, assume we loaded 175 PIV vector maps describing a moving body's wake (as a .mat file, by clicking the ``Load PIV Data .mat file'' button in the GUI), where wake image no. 12-58 correlate with the first wingbeat, wake image no. 58-101 correlate with a second consecutive wingbeat, wake image no. 101-137 correlate with a third consecutive wingbeat and wake image no. 137-174 correlate with a fourth consecutive wingbeat. For the first wingbeat, wake image no. 12 marks the start of its downstroke phase, wake image no. 34 marks the end of the downstroke phase and wake image no. 58 marks the end of the upstroke phase. For the second wingbeat, wake image no. 58 marks the start of its downstroke phase, wake image no. 78 marks the end of the downstroke phase and wake image no. 101 marks the end of the upstroke phase. For the third wingbeat, wake image no. 101 marks the start of its downstroke phase, wake image no. 119 marks the end of the downstroke phase and wake image no. 137 marks the end of the upstroke phase. For the fourth wingbeat, wake image no. 137 marks the start of its downstroke phase, wake image no. 155 marks the end of the downstroke phase and wake image no. 174 marks the end of the upstroke phase.
+Therefore, one has to edit the kinematics database table as depicted in \Cref{fig:GUI-Kinematics-db-filled}; adding/removing wingbeats in the table can be done by clicking the ``Add Wingbeat''/``Remove Wingbeat'' button. 
+Here, the kinematics database presented in \Cref{fig:GUI-Kinematics-db-filled} corresponds to four consecutive flapping flight wingbeats of the Starling. 
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=\textwidth]{kinematics-database-window}
+	\includegraphics[width=0.9\textwidth]{kinematics-database-window}
 	\caption{Set Kinematics information window}
 	\label{fig:GUI-kinematics-database-window}
 \end{figure}
-
-For example, assume we loaded 175 PIV vector maps describing the bird's wake (as a .mat file, by clicking the ``Load PIV Data .mat file'' button in the GUI), where wake image no. 12-58 correlate with the first wingbeat, wake image no. 58-101 correlate with a second consecutive wingbeat, wake image no. 101-137 correlate with a third consecutive wingbeat and wake image no. 137-174 correlate with a fourth consecutive wingbeat. For the first wingbeat, wake image no. 12 marks the start of its downstroke phase, wake image no. 34 marks the end of the downstroke phase and wake image no. 58 marks the end of the upstroke phase. For the second wingbeat, wake image no. 58 marks the start of its downstroke phase, wake image no. 78 marks the end of the downstroke phase and wake image no. 101 marks the end of the upstroke phase. For the third wingbeat, wake image no. 101 marks the start of its downstroke phase, wake image no. 119 marks the end of the downstroke phase and wake image no. 137 marks the end of the upstroke phase. For the fourth wingbeat, wake image no. 137 marks the start of its downstroke phase, wake image no. 155 marks the end of the downstroke phase and wake image no. 174 marks the end of the upstroke phase.
-Therefore, one has to edit the kinematics database table as depicted in \Cref{fig:GUI-Kinematics-db-filled}; adding/removing wingbeats in the table can be done by clicking the ``Add Wingbeat''/``Remove Wingbeat'' button. 
-Here, the kinematics database presented in \Cref{fig:GUI-Kinematics-db-filled} corresponds to four consecutive flapping flight wingbeats of the Starling. 
 
 After finish editing the kinematics databse table, the user can save the database in the \textit{get}WAKE workspace for further analysis, by clicking the ``Save database'' button in the ``Set Kinematics Info'' window. 
 The user can also export the kinematics database as a .mat file for future usage by clicking the ``Export Databse'' button in the ``Set Kinematics Info'' window. 
@@ -243,7 +245,7 @@ Please be sure to click the ``Save database'' button after finish editing the ki
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=\textwidth]{Kinematics-db-filled}
+	\includegraphics[width=0.8\textwidth]{Kinematics-db-filled}
 	\caption{Kinematics database table filled for four consecutive flapping flight wingbeats of a Starling}
 	\label{fig:GUI-Kinematics-db-filled}
 \end{figure}
@@ -259,7 +261,7 @@ In the ``Processing'' section, we enter the following parameters for processing 
 	\item \textbf{Vertical cut}: number of vector columns to remove from both the top and bottom edges of each instantaneous PIV velocity map, before processing the wake images in the sequence (\textit{default} value is 4).
 	\item \textbf{Initial vec map}: initial PIV wake image number in the wake images sequence from the loaded wake data .mat file (\textit{default} value is 1).
 	\item \textbf{Final vec map}: final PIV wake image number in the wake images sequence from the loaded wake data .mat file (\textit{default} value is 1).
-	\item \textbf{Cross-Correlation parameter}: menu bar for defining the flow parameter according to which the cross-correlation algorithm will perform for each pair of consecutive wake images to construct the complete wake image. Two flow parameters are available for the cross-correlation algorithm:  ``\textit{velocity fluctuations}'' or ``\textit{velocity}''; i.e., ($u^\prime, v^\prime$) or ($u,v$). (\textit{default} value is ``\textit{velocity fluctuations}'').
+	\item \textbf{Cross-Correlation parameter}: menu bar for defining the flow parameter according to which the cross-correlation algorithm will perform for each pair of consecutive wake images to reconstruct the complete wake image. Two flow parameters are available for the cross-correlation algorithm:  ``\textit{velocity fluctuations}'' or ``\textit{velocity}''; i.e., ($u^\prime, v^\prime$) or ($u,v$). (\textit{default} value is ``\textit{velocity fluctuations}'').
 \end{itemize}
   
 \begin{figure}[ht!]
@@ -273,20 +275,20 @@ In the ``Processing'' section, we enter the following parameters for processing 
   
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.77\textwidth]{Generating_Wake_processing}
+	\includegraphics[width=0.79\textwidth]{Generating_Wake_processing}
 	\caption{Window showing the progress of the complete wake computation}
 	\label{fig:GUI-generating-wake-progress}
 \end{figure}
   
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.77\textwidth]{wake-generated}
+	\includegraphics[width=0.8\textwidth]{wake-generated}
 	\caption{The complete wake image plotted in the ``Wake figure region''}
 	\label{fig:GUI-wake-generated}
 \end{figure}
  
- \newpage
- \subsection{Wake plot options}
+ 
+\subsection{Wake plot options}
 Once a complete wake image was generated, the user can edit the plot from the ``Wake Plot Options'' section, by using the following parameters (see \Cref{fig:GUI-wake-generated}):
 \begin{itemize}
 	\item \textbf{Display vectors}: on/off button for plotting the velocity vectors in the complete wake image (\textit{default} status is \textit{on}).
@@ -309,10 +311,10 @@ The user can open the wake image in a new figure window for better visualization
 The complete wake image can also be exported as a figure file by clicking the option ``Save wake plot'' or using the shortcut Ctrl+S (see \Cref{fig:GUI-wake-menubar}).
 Vorticity values computed in the complete wake image can be exported as a .mat. file for further analysis by clicking the option ``Save wake vorticity map'' or using the shortcut Ctrl+V (see \Cref{fig:GUI-wake-menubar}).
   
-  \newpage
+
  \begin{figure}[ht!]
  	\centering
- 	\includegraphics[width=0.87\textwidth]{Wake-menuber-options}
+ 	\includegraphics[width=0.9\textwidth]{Wake-menuber-options}
  	\caption{Options in the ``Wake'' menu bar}
  	\label{fig:GUI-wake-menubar}
  \end{figure}
@@ -348,28 +350,30 @@ Either this option or its shortcut Ctrl+N will open a new window entitled ``Movi
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.86\textwidth]{movie-properties}
+	\includegraphics[width=0.9\textwidth]{movie-properties}
 	\caption{Movie properties}
 	\label{fig:GUI-movie-properties}
 \end{figure}
 
 \newpage
 \subsection{Forces estimation}\label{forces_estimation}
-The user can estimate the variation of drag and cumulative circulatory lift throughout the wake, for various wingbeat cycles, vs. time or streamwise distance ($x/c$). 
-To do so, the user first needs to define several parameters in the ``Forces'' section (see \Cref{fig:GUI-Forces-menubar}):
+The user can estimate the variation of drag and cumulative circulatory lift throughout the wake, as a function of time or streamwise distance ($x/c$). 
+Several parameters are availabel in the ``Forces'' section (see \Cref{fig:GUI-Forces-menubar}):
 \begin{itemize}
-	\item \textbf{DSUS}: on/off button for specifying that the flapping wingbeats are characterized first with a downstroke phase that is followed with an upstroke phase (\textit{default} status is \textit{on}).
-	\item \textbf{USDS}: on/off button for specifying that the flapping wingbeats are characterized first with an upstroke phase that is followed with a downstroke phase (\textit{default} status is \textit{off}).
+	\item \textbf{DSUS}: on/off button for specifying that the flapping wingbeats are characterized first with a downstroke phase that is followed with an upstroke phase (\textit{default} status is \textit{on}). Please note that this push button will only be available if the ``\textit{Flapping wing}'' motion type is selected for the body.
+	\item \textbf{USDS}: on/off button for specifying that the flapping wingbeats are characterized first with an upstroke phase that is followed with a downstroke phase (\textit{default} status is \textit{off}). Please note that this push button will only be available if the ``\textit{Flapping wing}'' motion type is selected for the body.
 	\item \textbf{Gap for x/c}: setting an artificial normalized streamwise extent shift, after which the forces estimation will be plotted; e.g., if set to 5, the forces plots will not start from $x/c=0$, but from $x/c=5$. This parameter is only applicable for plotting the forces vs. the streamwise distance, $x/c$ (\textit{default} value is 0).
-	\item \textbf{Set Kinematics Database}: push button (see \Cref{KIN-DB}); when clicked will open a new window entitled ``Set Kinematics Info'' for setting the kinematics database of the various wingbeats. The phases definition in this database will determine how the forces variation throughout the wake will be presented for the various wingbeat cycles.
-	\item \textbf{Start at wingbeat no.}: initial wingbeat no. from which the forces variation plot will start, according to the kinematics database (\textit{default} value is 1).
-	\item \textbf{Stop at wingbeat no.}: final wingbeat no. up to which the forces variation will be presented, according to the kinematics database (\textit{default} value is 1).
+	\item \textbf{Set Flapping Wingbeats Kinematics}: push button (see \Cref{KIN-DB}); when clicked will open a new window entitled ``Set Kinematics Info'' for setting the kinematics database of the various wingbeats. The phases definition in this database will determine how the forces variation throughout the wake will be presented for the various wingbeat cycles. Please note that this push button will only be available if the ``\textit{Flapping wing}'' motion type is selected for the body.
+	\item \textbf{Start at wingbeat no.}: initial wingbeat no. from which the forces variation plot will start, according to the kinematics database (\textit{default} value is 1). Please note that this push button will only be available if the ``\textit{Flapping wing}'' motion type is selected for the body.
+	\item \textbf{Stop at wingbeat no.}: final wingbeat no. up to which the forces variation will be presented, according to the kinematics database (\textit{default} value is 1). Please note that this push button will only be available if the ``\textit{Flapping wing}'' motion type is selected for the body.
 	\item \textbf{x axis}: define the $x$ axis in the plots of the forces variation throughout the wake. Two options are available (\textit{default} option is ``\textit{x\_c}''):
 	\begin{itemize}
 		\item ``x\_c'' - plots the forces estimation vs. the normalized streamwise distance of the wake, $x/c$.
 		\item ``t\_T'' - plots the forces estimation vs. the normalized time, $t/T$; where $T$ is the wingbeat total time period.
 	\end{itemize}
 \end{itemize}
+For the wake behind a stationary body (when the ``\textit{Stationary body}'' option is selected in ``Motion type''), the variation of the drag and cumulative circulatory lift will be plotted throughout the wake maps sequence, as determined from ``Initial vec map'' and ``Final vec map''.
+For the wake behind a body that performs a flapping wing motion (when the ``\textit{Flapping wing}'' option is selected in ``Motion type''), the variation of the drag and cumulative circulatory lift will be plotted for the various wingbeat cycles, as defined in ``Set Flapping Wingbeats Kinematics'' and selected by ``Start at wingbeat no.'' and ``Stop at wingbeat no.''.
 Please note, the user can plot the forces variation for multiple wingbeats (``Start at wingbeat no.''<``Final at wingbeat no.'') or for a single wingbeat (``Start at wingbeat no.''=``Final at wingbeat no.''). If choosing to plot the forces variation for multiple wingbeats, the $x$ axis can only be depicted in terms of absolute time, $t$, and not the normalized time, $t/T$; as the time period, $T$, can be different for multiple wingbeats. 
 
 
@@ -383,22 +387,22 @@ Please note, the user can plot the forces variation for multiple wingbeats (``St
 
 
 Ploting the variation of forces along the wake is available on the top left menu bar, under the drop-down menu ``Forces''. 
-The option ``Plot cumulative circulatory lift coefficient vs time/distance'' or its shortcut Ctrl+Z (see \Cref{fig:GUI-Forces-menubar}) will plot the variation in the cirulatory lift coefficient $\Delta C_{l_{circ}}$ vs. time (see \Cref{fig:GUI-dCl-plot}) or $x/c$ (see \Cref{fig:GUI-dCl-plot-vs-x_c}), depending on the ``x axis'' parameter. The option ``Save cumulative circulatory lift coefficient plot'' or its shortcut Ctrl+Y will export the variation in the circulatory lift coefficient as an image file.
+The option ``Plot cumulative circulatory lift coefficient vs time/distance'', its shortcut Ctrl+Z or the push button ``Circ. Lift'' (see \Cref{fig:GUI-Forces-menubar}) will plot the variation in the cirulatory lift coefficient $\Delta C_{l_{circ}}$ vs. time (see \Cref{fig:GUI-dCl-plot}) or $x/c$ (see \Cref{fig:GUI-dCl-plot-vs-x_c}), depending on the ``x axis'' parameter. The option ``Save cumulative circulatory lift coefficient plot'' or its shortcut Ctrl+Y will export the variation in the circulatory lift coefficient as an image file.
 \Cref{fig:GUI-dCl-plot-vs-time-4-wingbeats} depicts the time variation of the cumulative circulatory lift coefficient for four consecutive Starling wingbeats.
-The option ``Plot drag coefficient vs time/distance'' or its shortcut Ctrl+D (see \Cref{fig:GUI-Forces-menubar}) will plot the drag coefficient $C_d$ vs. time or $x/c$, depending on the ``x axis'' parameter (see \Cref{fig:GUI-drag-plot}). The option ``Save drag coefficient plot'' or its shortcut Ctrl+E will export the drag coefficient figure as an image file.
+The option ``Plot drag coefficient vs time/distance'', its shortcut Ctrl+D  or the push button ``Drag'' (see \Cref{fig:GUI-Forces-menubar}) will plot the drag coefficient $C_d$ vs. time or $x/c$, depending on the ``x axis'' parameter (see \Cref{fig:GUI-drag-plot}). The option ``Save drag coefficient plot'' or its shortcut Ctrl+E will export the drag coefficient figure as an image file.
 Please note, the white shaded region in the above plots corresponds to the downstroke phase in the wingbeat, whereas the gray shaded region corresponds to the upstroke phase. $C_{d_0}$ and $C_{d_1}$ are the steady and unsteady components of the drag coefficient, respectively.
 
-
+\newpage
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.79\textwidth]{dCl-plot}
+	\includegraphics[width=0.75\textwidth]{dCl-plot}
 	\caption{Variation of the cumulative circulatory lift coefficient with $t/T$ for the $3^\mathrm{rd}$ Starling's wingbeat}
 	\label{fig:GUI-dCl-plot}
 \end{figure}
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.79\textwidth]{dCl-plot-vs-x_c}
+	\includegraphics[width=0.75\textwidth]{dCl-plot-vs-x_c}
 	\caption{Variation of the cumulative circulatory lift coefficient with $x/c$ for the $3^\mathrm{rd}$ Starling's wingbeat}
 	\label{fig:GUI-dCl-plot-vs-x_c}
 \end{figure}
@@ -439,12 +443,12 @@ For more information regarding the above options, see \Cref{dCl_calc}. Further i
 
 \section{Wake Reconstruction}
 The main motivation in the \textit{get}WAKE Matlab Toolbox is to describe, visually, the wake evolution behind flapping birds or bodies undergoing unsteady motion to observe the formation of flow features as they shed downstream \cite{Ben-Gida2013,Nafi2020,Stalnov2015,Gurka2017,Lawley2019}. 
-A detailed wake characterization can explain many of the phenomena that the source experienced. 
-Utilization of a long-duration time-resolved PIV system enables the wake measurement behind birds' and moving bodies for a relatively long time (or distance) and with high spatial and temporal resolution. 
-The wake reconstruction (see an example wake measured behind a flapping Starling in \Cref{fig:GUI-wake-evolution-example}), which is the main output of this toolbox, is based on PIV images taken from a stationary camera yielding Eulerian observation of the flow field behind the source. 
-For the wake reconstruction, we assume the bird's/body's position did not change much relative to the measurement plane. 
-Thus, invoking Taylor's hypothesis \cite{Taylor1938} allows the assumption that the flow remains relatively unchanged as it passes through the measurement plane. This hypothesis implies that there is no significant time dependence of a spatial velocity distribution over the timescale required for observation. 
-Zaman and Hussain \cite{Zaman1981} showed that the hypothesis works well for an isolated coherent structure if a constant convection velocity, equal to the structure centre velocity, is used in the case of shear flows. 
+A detailed wake characterization can help to investigate the flow dynamics experienced by the body. 
+Utilization of a long-duration time-resolved PIV system enables the wake measurement behind flying birds and bodies for a relatively long time (or distance) and with high spatial and temporal resolution. 
+The wake reconstruction (see an example wake measured behind a flapping Starling in \Cref{fig:GUI-wake-evolution-example}), which is the main output of this toolbox, is based on PIV images taken from a stationary camera yielding Eulerian observation of the flow field behind the body. 
+For the wake reconstruction, we assume the bird/body's position did not change much relative to the measurement plane. 
+By invoking Taylor's hypothesis \cite{Taylor1938}, we allow the assumption that the flow remains relatively unchanged as it passes through the measurement plane. This hypothesis implies that there is no significant time dependence of a spatial velocity distribution over the timescale required for observation. 
+Zaman and Hussain \cite{Zaman1981} showed that the hypothesis works well for an isolated coherent structure if a constant convection velocity, equal to the structure centre velocity, is used in the case of shear flows.
 
 The wake composite image is generated by offsetting each consecutive PIV image with a calculated instantaneous convection velocity and then overlapping the images, while keeping the mid region of each instantaneous PIV image. 
 The instantaneous convection velocity, which determines the offset if each PIV image, is calculated based on a cross-correlation algorithm that examine the match of the velocity vector fields ($u,v$) or the fluctuating velocity vector fields ($u^{\prime},v^{\prime}$) of two consecutive PIV maps.
@@ -459,6 +463,7 @@ C_p(X,Y,T)&=    \\
 If $C=1$, the two PIV maps are identical; i.e., perfectly matched. If the two images are different, then $C<1$.
 $I,J$ is the size of the overlapping area and $\sigma_p$ is the standard deviation of the flow property $p$. Here, $p$ is to be replaced with $u$ and $v$ for computing the cross-correlation coefficients with respect to the velocity vector maps ($C_u,C_v$), or with $u^{\prime}$ and $v^{\prime}$ for computing the cross-correlation coefficients with respect to the velocity fluctuations vector maps ($C_{u^{\prime}},C_{v^{\prime}}$).
 The spatial shift ($X,Y$) of any instantaneous PIV map is computed based on overlapping that achieves the maximum correlation coefficient; i.e., $\mathrm{max}\left[C_u,C_v\right]$ or $\mathrm{max}\left[C_{u^\prime},C_{v^\prime}\right]$.
+Please note that for the cross-correlation algorithm to work properly, the sampling rate of the PIV velocity vector maps must be at least 1.7 orders-of-magnitude higher than the wake flow field base frequency, thus allowing sufficient temporal resolution to track the wake flow structures as they propagate from one velocity map to another. For example, if the wake is measured behind a bird in flapping flight with a flapping frequency of 10 $\mathrm{Hz}$, the PIV velocity vector maps must be sampled at a rate of 500 $\mathrm{Hz}$ or more. i.e., the sampling rate of the PIV raw images has to be 1 $\mathrm{kHz}$ or higher.
 If the cross-correlation failed during the \textit{get}WAKE wake reconstruction process (e.g., due to poor PIV data), the spatial shift of each instantaneous PIV map is determined from the freestream advection velocity $U_\infty$ and the time difference $\Delta t$; i.e., $X=U_\infty\Delta t$.
 Please note to not remove to many vector rows/columns from the PIV map (using ``Horizontal cut'' or ``Vertical cut''), otherwise the cross-correlation may fail due to insufficient overlapping area.
 
@@ -486,7 +491,7 @@ Therefore, we approximate the full surface integral of the unsteady term to incl
 For the steady drag coefficient, we average the various profiles along the streamwise extent of each PIV map, thus yielding a single $C_{d_0}$ value to represent each PIV map. 
 \Cref{fig:GUI-drag-plot} depicts an example of the drag coefficient variation in the wake measured behind a freely flying Starling.
 
-\newpage
+
 \subsection{Cumulative circulatory lift coefficient $\Delta C_{l_{circ}}$}\label{dCl_calc}
 The variation of the cumulative circulatory lift coefficient can be estimated from the PIV wake data based on Stalnov et al. \cite{Stalnov2015}, Ben-Gida et al. \cite{BenGida2016} and Nafi et al. \cite{Nafi2020}.
 Any unsteady motion of a lifting surface is accompanied by shedding of vortices into the wake. Assuming potential flow, one can utilize the unsteady thin airfoil theory \cite{Theodorsen1935,Sears1938}, which assumes a planar wake evolution, to compute the time-dependent lift of a two-dimensional lifting surface.
@@ -505,7 +510,7 @@ L_{circ}(t) = \underbrace{\rho \frac{\mathrm{d}}{\mathrm{d}t}\iint_Ax\omega_z(t)
 where $x$ and $y$ are the Cartesian coordinates defining the wake flow plane, with $x$ axis in the freestream direction. In the above equation, the first integral from left is the first $x$-moment of the vorticity field ($A$) in the wake, with $\omega_z(t)$ as the instantaneous spanwise vorticity field ($=\partial v/\partial x - \partial u/\partial y$) that is evaluated directly from the PIV data using a least squares differentiation scheme. The second integral from left is the contribution from the viscous term (diffusion), with $\nu$ as the kinematic viscosity and $h$ denoting the vertical extent of the computed velocity field in the wake. This term may be negligible in the far wake, yet, here we take it into account for near-wake effects. $\rho$ is the fluid density.
 Please note that in our notation in \Cref{eq:inst_Lift}, a minus sign is \textbf{not} placed ahead of the first integral from left. This is because in our analysis we define positive vorticity values in the wake region as counter-clockwise vortices, whereas Panda and Zaman \cite{Panda1994} defined them as clockwise vortices.
 
-\newpage
+
 Applying Taylor's hypothesis (as introduced above for the wake reconstruction), $\mathrm{d} x = U_\infty \mathrm{d}t$, one can transform the spatial derivative in the left-side integral of \Cref{eq:inst_Lift} into a temporal one. 
 Moreover, by interchanging the left-side integral in \Cref{eq:inst_Lift} with the time derivative (using Leibniz integral rule), one can re-write \Cref{eq:inst_Lift} as follows:
 \begin{equation}

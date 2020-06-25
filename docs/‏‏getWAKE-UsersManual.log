@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.2.19)  2 JUN 2020 01:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.2.19)  25 JUN 2020 20:33
 entering extended mode
 **‏‏getWAKE-UsersManual.tex
 (‏‏getWAKE-UsersManual.tex
@@ -821,24 +821,24 @@ LaTeX Font Info:    Try loading font information for U+esint on input line 74.
 (D:\Softwares\MiKTeX\tex\latex\esint\uesint.fd
 File: uesint.fd 
 )
-<Images/getWAKE-Overview.png, id=66, 846.873pt x 531.513pt>
-File: Images/getWAKE-Overview.png Graphic file (type png)
+<./Images/getWAKE-Overview.png, id=66, 584.4234pt x 405.1938pt>
+File: ./Images/getWAKE-Overview.png Graphic file (type png)
 
-<use Images/getWAKE-Overview.png>
-Package pdftex.def Info: Images/getWAKE-Overview.png used on input line 80.
-(pdftex.def)             Requested size: 426.79135pt x 267.8645pt.
+<use ./Images/getWAKE-Overview.png>
+Package pdftex.def Info: ./Images/getWAKE-Overview.png used on input line 80.
+(pdftex.def)             Requested size: 426.79135pt x 295.90648pt.
  [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map} <./Images/getWAKE-Overview
 .png>] (‏‏getWAKE-UsersManual.toc)
 \tf@toc=\write5
 
-[2] <Images/open_window.png, id=114, 804.825pt x 589.329pt>
-File: Images/open_window.png Graphic file (type png)
+[2] <./Images/openwindow.png, id=114, 805.482pt x 590.643pt>
+File: ./Images/openwindow.png Graphic file (type png)
 
-<use Images/open_window.png>
-Package pdftex.def Info: Images/open_window.png used on input line 123.
-(pdftex.def)             Requested size: 426.79135pt x 312.51373pt.
+<use ./Images/openwindow.png>
+Package pdftex.def Info: ./Images/openwindow.png used on input line 123.
+(pdftex.def)             Requested size: 426.79135pt x 312.95819pt.
  [3]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 133.
 
@@ -847,203 +847,205 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 133.
-[4 <./Images/open_window.png>]
-<Images/‏‏open_window_marked_regions.png, id=138, 804.825pt x 589.329pt>
-File: Images/‏‏open_window_marked_regions.png Graphic file (type png)
+ [4 <./Images/openwindow.png>]
+<./Images/openwindow-marked.png, id=137, 805.482pt x 590.643pt>
+File: ./Images/openwindow-marked.png Graphic file (type png)
 
-<use Images/‏‏open_window_marked_regions.png>
-Package pdftex.def Info: Images/‏‏open_window_marked_regions.png used on in
-put line 145.
-(pdftex.def)             Requested size: 426.79135pt x 312.51373pt.
- [5 <./Images/‏‏open_window_marked_regions.png>]
-<Images/explorer_window_wake_data.png, id=149, 806.796pt x 589.986pt>
-File: Images/explorer_window_wake_data.png Graphic file (type png)
+<use ./Images/openwindow-marked.png>
+Package pdftex.def Info: ./Images/openwindow-marked.png used on input line 145.
 
-<use Images/explorer_window_wake_data.png>
-Package pdftex.def Info: Images/explorer_window_wake_data.png used on input lin
-e 167.
-(pdftex.def)             Requested size: 426.79135pt x 312.09692pt.
- [6 <./Images/explorer_window_wake_data.png>] <Images/Inputs-drop-down-menu.png
-, id=161, 806.139pt x 591.3pt>
-File: Images/Inputs-drop-down-menu.png Graphic file (type png)
+(pdftex.def)             Requested size: 426.79135pt x 312.95819pt.
+ [5 <./Images/openwindow-marked.png>]
+<./Images/explorer-window-wake-data.png, id=148, 805.482pt x 588.672pt>
+File: ./Images/explorer-window-wake-data.png Graphic file (type png)
 
-<use Images/Inputs-drop-down-menu.png>
-Package pdftex.def Info: Images/Inputs-drop-down-menu.png used on input line 18
-2.
-(pdftex.def)             Requested size: 384.1096pt x 281.74559pt.
+<use ./Images/explorer-window-wake-data.png>
+Package pdftex.def Info: ./Images/explorer-window-wake-data.png used on input l
+ine 167.
+(pdftex.def)             Requested size: 426.79135pt x 311.91383pt.
+ [6 <./Images/explorer-window-wake-data.png>] <./Images/Inputs-drop-down-menu.p
+ng, id=160, 806.139pt x 589.986pt>
+File: ./Images/Inputs-drop-down-menu.png Graphic file (type png)
 
-<Images/select-inputs-mat-file.png, id=162, 804.168pt x 589.329pt>
-File: Images/select-inputs-mat-file.png Graphic file (type png)
-
-<use Images/select-inputs-mat-file.png>
-Package pdftex.def Info: Images/select-inputs-mat-file.png used on input line 1
-89.
-(pdftex.def)             Requested size: 384.1096pt x 281.48987pt.
- [7 <./Images/Inputs-drop-down-menu.png> <./Images/select-inputs-mat-file.png>]
-
-<Images/set-kinematics-database.png, id=171, 806.139pt x 588.015pt>
-File: Images/set-kinematics-database.png Graphic file (type png)
-
-<use Images/set-kinematics-database.png>
-Package pdftex.def Info: Images/set-kinematics-database.png used on input line 
-217.
-(pdftex.def)             Requested size: 303.02472pt x 221.03445pt.
- [8 <./Images/set-kinematics-database.png>] <Images/kinematics-database-window.
-png, id=180, 804.168pt x 589.986pt>
-File: Images/kinematics-database-window.png Graphic file (type png)
-
-<use Images/kinematics-database-window.png>
-Package pdftex.def Info: Images/kinematics-database-window.png used on input li
-ne 229.
-(pdftex.def)             Requested size: 426.79135pt x 313.1232pt.
- [9 <./Images/kinematics-database-window.png>] <Images/Kinematics-db-filled.png
-, id=189, 806.796pt x 589.986pt>
-File: Images/Kinematics-db-filled.png Graphic file (type png)
-
-<use Images/Kinematics-db-filled.png>
-Package pdftex.def Info: Images/Kinematics-db-filled.png used on input line 246
-.
-(pdftex.def)             Requested size: 426.79135pt x 312.09692pt.
- [10 <./Images/Kinematics-db-filled.png>]
-<Images/Wake-processing-parameters.png, id=197, 805.482pt x 589.986pt>
-File: Images/Wake-processing-parameters.png Graphic file (type png)
-
-<use Images/Wake-processing-parameters.png>
-Package pdftex.def Info: Images/Wake-processing-parameters.png used on input li
-ne 267.
-(pdftex.def)             Requested size: 337.1623pt x 246.95518pt.
- [11 <./Images/Wake-processing-parameters.png>]
-<Images/Generating_Wake_processing.png, id=207, 804.168pt x 588.015pt>
-File: Images/Generating_Wake_processing.png Graphic file (type png)
-
-<use Images/Generating_Wake_processing.png>
-Package pdftex.def Info: Images/Generating_Wake_processing.png used on input li
-ne 276.
-(pdftex.def)             Requested size: 328.63115pt x 240.29814pt.
-
-<Images/wake-generated.png, id=208, 804.825pt x 589.986pt>
-File: Images/wake-generated.png Graphic file (type png)
-
-<use Images/wake-generated.png>
-Package pdftex.def Info: Images/wake-generated.png used on input line 283.
-(pdftex.def)             Requested size: 328.63115pt x 240.90555pt.
- [12 <./Images/Generating_Wake_processing.png> <./Images/wake-generated.png>] [
-13]
-<Images/Wake-menuber-options.png, id=230, 805.482pt x 589.329pt>
-File: Images/Wake-menuber-options.png Graphic file (type png)
-
-<use Images/Wake-menuber-options.png>
-Package pdftex.def Info: Images/Wake-menuber-options.png used on input line 315
-.
-(pdftex.def)             Requested size: 371.30638pt x 271.66115pt.
-
-<Images/Wake-threshold-properties.png, id=233, 806.139pt x 589.329pt>
-File: Images/Wake-threshold-properties.png Graphic file (type png)
-
-<use Images/Wake-threshold-properties.png>
-Package pdftex.def Info: Images/Wake-threshold-properties.png used on input lin
-e 325.
-(pdftex.def)             Requested size: 371.30638pt x 271.44533pt.
- [14 <./Images/Wake-menuber-options.png> <./Images/Wake-threshold-properties.pn
-g>]
-<Images/Movie-menubar.png, id=243, 806.139pt x 589.986pt>
-File: Images/Movie-menubar.png Graphic file (type png)
-
-<use Images/Movie-menubar.png>
-Package pdftex.def Info: Images/Movie-menubar.png used on input line 344.
+<use ./Images/Inputs-drop-down-menu.png>
+Package pdftex.def Info: ./Images/Inputs-drop-down-menu.png used on input line 
+182.
 (pdftex.def)             Requested size: 384.1096pt x 281.11949pt.
 
-<Images/movie-properties.png, id=244, 804.825pt x 589.329pt>
-File: Images/movie-properties.png Graphic file (type png)
+<./Images/select-inputs-mat-file.png, id=161, 805.482pt x 589.986pt>
+File: ./Images/select-inputs-mat-file.png Graphic file (type png)
 
-<use Images/movie-properties.png>
-Package pdftex.def Info: Images/movie-properties.png used on input line 351.
-(pdftex.def)             Requested size: 367.04082pt x 268.7656pt.
- [15 <./Images/Movie-menubar.png>] [16 <./Images/movie-properties.png>]
-<Images/Forces-menubar.png, id=260, 806.796pt x 589.329pt>
-File: Images/Forces-menubar.png Graphic file (type png)
+<use ./Images/select-inputs-mat-file.png>
+Package pdftex.def Info: ./Images/select-inputs-mat-file.png used on input line
+ 189.
+(pdftex.def)             Requested size: 384.1096pt x 281.34454pt.
+ [7 <./Images/Inputs-drop-down-menu.png> <./Images/select-inputs-mat-file.png>]
+ [8]
+<./Images/set-kinematics-database.png, id=175, 806.139pt x 589.329pt>
+File: ./Images/set-kinematics-database.png Graphic file (type png)
 
-<use Images/Forces-menubar.png>
-Package pdftex.def Info: Images/Forces-menubar.png used on input line 378.
-(pdftex.def)             Requested size: 328.63115pt x 240.05278pt.
- [17 <./Images/Forces-menubar.png>]
-<Images/dCl-plot.png, id=276, 804.825pt x 588.672pt>
-File: Images/dCl-plot.png Graphic file (type png)
- <use Images/dCl-plot.png>
-Package pdftex.def Info: Images/dCl-plot.png used on input line 394.
-(pdftex.def)             Requested size: 337.1623pt x 246.61179pt.
+<use ./Images/set-kinematics-database.png>
+Package pdftex.def Info: ./Images/set-kinematics-database.png used on input lin
+e 219.
+(pdftex.def)             Requested size: 384.1096pt x 280.80644pt.
+ [9 <./Images/set-kinematics-database.png>]
+<./Images/kinematics-database-window.png, id=186, 806.139pt x 589.329pt>
+File: ./Images/kinematics-database-window.png Graphic file (type png)
 
-<Images/dCl-plot-vs-x_c.png, id=277, 804.825pt x 589.329pt>
-File: Images/dCl-plot-vs-x_c.png Graphic file (type png)
+<use ./Images/kinematics-database-window.png>
+Package pdftex.def Info: ./Images/kinematics-database-window.png used on input 
+line 235.
+(pdftex.def)             Requested size: 384.1096pt x 280.80644pt.
 
-<use Images/dCl-plot-vs-x_c.png>
-Package pdftex.def Info: Images/dCl-plot-vs-x_c.png used on input line 401.
-(pdftex.def)             Requested size: 337.1623pt x 246.88702pt.
- [18 <./Images/dCl-plot.png> <./Images/dCl-plot-vs-x_c.png>]
-<Images/dCl-plot-vs-time-4-wingbeats.png, id=285, 805.482pt x 589.329pt>
-File: Images/dCl-plot-vs-time-4-wingbeats.png Graphic file (type png)
+<./Images/Kinematics-db-filled.png, id=187, 805.482pt x 589.329pt>
+File: ./Images/Kinematics-db-filled.png Graphic file (type png)
 
-<use Images/dCl-plot-vs-time-4-wingbeats.png>
-Package pdftex.def Info: Images/dCl-plot-vs-time-4-wingbeats.png used on input 
-line 409.
+<use ./Images/Kinematics-db-filled.png>
+Package pdftex.def Info: ./Images/Kinematics-db-filled.png used on input line 2
+48.
 (pdftex.def)             Requested size: 341.43437pt x 249.80956pt.
+ [10 <./Images/kinematics-database-window.png>]
+<./Images/Wake-processing-parameters.png, id=195, 805.482pt x 589.986pt>
+File: ./Images/Wake-processing-parameters.png Graphic file (type png)
 
-<Images/drag-plot.png, id=286, 805.482pt x 588.015pt>
-File: Images/drag-plot.png Graphic file (type png)
+<use ./Images/Wake-processing-parameters.png>
+Package pdftex.def Info: ./Images/Wake-processing-parameters.png used on input 
+line 269.
+(pdftex.def)             Requested size: 337.1623pt x 246.95518pt.
+ [11 <./Images/Kinematics-db-filled.png>]
+<./Images/Generating_Wake_processing.png, id=205, 804.168pt x 589.329pt>
+File: ./Images/Generating_Wake_processing.png Graphic file (type png)
 
-<use Images/drag-plot.png>
-Package pdftex.def Info: Images/drag-plot.png used on input line 416.
-(pdftex.def)             Requested size: 341.43437pt x 249.25256pt.
- [19 <./Images/dCl-plot-vs-time-4-wingbeats.png> <./Images/drag-plot.png>]
-<Images/Lift-comp-methods.png, id=300, 806.796pt x 590.643pt>
-File: Images/Lift-comp-methods.png Graphic file (type png)
+<use ./Images/Generating_Wake_processing.png>
+Package pdftex.def Info: ./Images/Generating_Wake_processing.png used on input 
+line 278.
+(pdftex.def)             Requested size: 337.1623pt x 247.08485pt.
 
-<use Images/Lift-comp-methods.png>
-Package pdftex.def Info: Images/Lift-comp-methods.png used on input line 434.
-(pdftex.def)             Requested size: 362.77525pt x 265.5796pt.
- [20 <./Images/Lift-comp-methods.png>]
-<Images/wake-evolution-example.png, id=315, 521.18715pt x 102.26205pt>
-File: Images/wake-evolution-example.png Graphic file (type png)
+<./Images/wake-generated.png, id=206, 805.482pt x 589.986pt>
+File: ./Images/wake-generated.png Graphic file (type png)
 
-<use Images/wake-evolution-example.png>
-Package pdftex.def Info: Images/wake-evolution-example.png used on input line 4
-68.
+<use ./Images/wake-generated.png>
+Package pdftex.def Info: ./Images/wake-generated.png used on input line 285.
+(pdftex.def)             Requested size: 341.43437pt x 250.08804pt.
+ [12 <./Images/Wake-processing-parameters.png> <./Images/Generating_Wake_proces
+sing.png>] [13 <./Images/wake-generated.png>]
+<./Images/Wake-menuber-options.png, id=225, 806.139pt x 589.329pt>
+File: ./Images/Wake-menuber-options.png Graphic file (type png)
+
+<use ./Images/Wake-menuber-options.png>
+Package pdftex.def Info: ./Images/Wake-menuber-options.png used on input line 3
+17.
+(pdftex.def)             Requested size: 384.1096pt x 280.80644pt.
+ [14 <./Images/Wake-menuber-options.png>] <./Images/Wake-threshold-properties.p
+ng, id=237, 806.139pt x 589.986pt>
+File: ./Images/Wake-threshold-properties.png Graphic file (type png)
+
+<use ./Images/Wake-threshold-properties.png>
+Package pdftex.def Info: ./Images/Wake-threshold-properties.png used on input l
+ine 327.
+(pdftex.def)             Requested size: 371.30638pt x 271.74794pt.
+
+<./Images/Movie-menubar.png, id=240, 806.139pt x 589.986pt>
+File: ./Images/Movie-menubar.png Graphic file (type png)
+
+<use ./Images/Movie-menubar.png>
+Package pdftex.def Info: ./Images/Movie-menubar.png used on input line 346.
+(pdftex.def)             Requested size: 384.1096pt x 281.11949pt.
+
+<./Images/movie-properties.png, id=241, 804.825pt x 589.329pt>
+File: ./Images/movie-properties.png Graphic file (type png)
+
+<use ./Images/movie-properties.png>
+Package pdftex.def Info: ./Images/movie-properties.png used on input line 353.
+(pdftex.def)             Requested size: 384.1096pt x 281.26506pt.
+ [15 <./Images/Wake-threshold-properties.png>] [16 <./Images/Movie-menubar.png>
+ <./Images/movie-properties.png>] [17]
+<./Images/Forces-menubar.png, id=263, 806.139pt x 589.986pt>
+File: ./Images/Forces-menubar.png Graphic file (type png)
+
+<use ./Images/Forces-menubar.png>
+Package pdftex.def Info: ./Images/Forces-menubar.png used on input line 382.
+(pdftex.def)             Requested size: 328.63115pt x 240.50945pt.
+ [18 <./Images/Forces-menubar.png>]
+<./Images/dCl-plot.png, id=280, 805.482pt x 589.329pt>
+File: ./Images/dCl-plot.png Graphic file (type png)
+
+<use ./Images/dCl-plot.png>
+Package pdftex.def Info: ./Images/dCl-plot.png used on input line 398.
+(pdftex.def)             Requested size: 320.0935pt x 234.1987pt.
+
+<./Images/dCl-plot-vs-x_c.png, id=281, 806.139pt x 589.986pt>
+File: ./Images/dCl-plot-vs-x_c.png Graphic file (type png)
+
+<use ./Images/dCl-plot-vs-x_c.png>
+Package pdftex.def Info: ./Images/dCl-plot-vs-x_c.png used on input line 405.
+(pdftex.def)             Requested size: 320.0935pt x 234.26173pt.
+ [19 <./Images/dCl-plot.png> <./Images/dCl-plot-vs-x_c.png>]
+<./Images/dCl-plot-vs-time-4-wingbeats.png, id=289, 806.139pt x 589.986pt>
+File: ./Images/dCl-plot-vs-time-4-wingbeats.png Graphic file (type png)
+
+<use ./Images/dCl-plot-vs-time-4-wingbeats.png>
+Package pdftex.def Info: ./Images/dCl-plot-vs-time-4-wingbeats.png used on inpu
+t line 413.
+(pdftex.def)             Requested size: 341.43437pt x 249.88098pt.
+
+<./Images/drag-plot.png, id=290, 805.482pt x 589.986pt>
+File: ./Images/drag-plot.png Graphic file (type png)
+
+<use ./Images/drag-plot.png>
+Package pdftex.def Info: ./Images/drag-plot.png used on input line 420.
+(pdftex.def)             Requested size: 341.43437pt x 250.08804pt.
+ [20 <./Images/dCl-plot-vs-time-4-wingbeats.png> <./Images/drag-plot.png>]
+<./Images/Lift-comp-methods.png, id=303, 805.482pt x 589.986pt>
+File: ./Images/Lift-comp-methods.png Graphic file (type png)
+
+<use ./Images/Lift-comp-methods.png>
+Package pdftex.def Info: ./Images/Lift-comp-methods.png used on input line 438.
+
+(pdftex.def)             Requested size: 362.77525pt x 265.7163pt.
+ [21 <./Images/Lift-comp-methods.png>]
+[22] <./Images/wake-evolution-example.png, id=329, 521.18715pt x 102.26205pt>
+File: ./Images/wake-evolution-example.png Graphic file (type png)
+
+<use ./Images/wake-evolution-example.png>
+Package pdftex.def Info: ./Images/wake-evolution-example.png used on input line
+ 473.
 (pdftex.def)             Requested size: 426.79135pt x 83.74461pt.
- [21]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 475.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 475.
+(hyperref)                removing `math shift' on input line 480.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 475.
-
-[22 <./Images/wake-evolution-example.png>]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 490.
+(hyperref)                removing `subscript' on input line 480.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\Delta' on input line 490.
+(hyperref)                removing `math shift' on input line 480.
+
+[23 <./Images/wake-evolution-example.png>]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 495.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 490.
+(hyperref)                removing `\Delta' on input line 495.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 490.
+(hyperref)                removing `subscript' on input line 495.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 490.
+(hyperref)                removing `subscript' on input line 495.
 
-[23] [24] [25] (‏‏getWAKE-UsersManual.bbl
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 495.
+
+[24] [25] [26] (‏‏getWAKE-UsersManual.bbl
 Underfull \hbox (badness 1052) in paragraph at lines 11--16
 []\T1/cmr/m/n/12 Oksana Stal-nov, Hadar Ben-Gida, Adam J. Kirch-he-fer, Christo
 -pher G.
@@ -1054,27 +1056,27 @@ Underfull \hbox (badness 1052) in paragraph at lines 11--16
 Package caption Warning: Unused \captionsetup[sub] on input line 39.
 See the caption package documentation for explanation.
 
-[26
+[27
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 580.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 580.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 585.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 585.
  (‏‏getWAKE-UsersManual.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 580.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 580.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 585.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 585.
 Package rerunfilecheck Info: File `‏‏getWAKE-UsersManual.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: AB9D2A5A53E0252A40C92E87A4E81B39;1000.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 580.
+(rerunfilecheck)             Checksum: CF6E1340590D860C06AB436A57B4AF50;1019.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 585.
  ) 
 Here is how much of TeX's memory you used:
- 22688 strings out of 493698
- 412748 string characters out of 3147633
- 510994 words of memory out of 3000000
+ 22689 strings out of 493698
+ 412861 string characters out of 3147633
+ 509995 words of memory out of 3000000
  25493 multiletter control sequences out of 15000+200000
  25289 words of font info for 70 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 62i,9n,75p,1261b,1497s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 62i,9n,75p,1266b,1497s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/Softwares/MiKTeX/fonts/enc/dvips/cm-super/cm-super-t1.enc}<D:/Softwares/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Softwares/MiKTeX/fonts/type
 1/public/amsfonts/cm/cmex10.pfb><D:/Softwares/MiKTeX/fonts/type1/public/amsfont
@@ -1097,9 +1099,9 @@ c/cm-super/sfbx2488.pfb><D:/Softwares/MiKTeX/fonts/type1/public/cm-super/sfrm08
 res/MiKTeX/fonts/type1/public/cm-super/sfrm1200.pfb><D:/Softwares/MiKTeX/fonts/
 type1/public/cm-super/sfrm1440.pfb><D:/Softwares/MiKTeX/fonts/type1/public/cm-s
 uper/sfti1200.pfb>
-Output written on ‏‏getWAKE-UsersManual.pdf (26 pages, 3511696 bytes).
+Output written on ‏‏getWAKE-UsersManual.pdf (27 pages, 3535044 bytes).
 PDF statistics:
- 500 PDF objects out of 1000 (max. 8388607)
- 92 named destinations out of 1000 (max. 500000)
+ 503 PDF objects out of 1000 (max. 8388607)
+ 93 named destinations out of 1000 (max. 500000)
  248 words of extra memory for PDF output out of 10000 (max. 10000000)
 
