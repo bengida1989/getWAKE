@@ -83,12 +83,12 @@ m_p = (1/p_cm)/100; %[m/pixel]
 
 
 %% WING PARAMETERS
-c = INPUTS(4); % Bird's characteristic chord [m]
-b = INPUTS(5); % Bird's wingspan [m] (includes the body width)
-W = INPUTS(8); % Bird's weight [kg]
+c = INPUTS(4); % body's characteristic length [m]
+b = INPUTS(5); % body's wingspan [m] (includes the body width)
+W = INPUTS(8); % body's weight [kg]
 g = 9.81; % Gravitational acceleration [m/sec2]
-bl = INPUTS(6); % Bird's body length [m]
-bw = INPUTS(7); % Bird's body width [m]
+bl = INPUTS(6); % body's length [m]
+bw = INPUTS(7); % body's width [m]
 %%
 
 

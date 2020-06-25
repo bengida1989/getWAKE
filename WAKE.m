@@ -26,7 +26,7 @@ function varargout = WAKE(varargin)
 
 % Edit the above text to modify the response to help WAKE
 
-% Last Modified by GUIDE v2.5 06-Jun-2020 13:40:01
+% Last Modified by GUIDE v2.5 23-Jun-2020 21:07:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -76,6 +76,28 @@ handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
+
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+switch body_motion_type_name
+    case 'Stationary body'
+        set(handles.radiobutton_dsus, 'Enable', 'off');
+        set(handles.radiobutton_usds, 'Enable', 'off');
+        set(handles.pushbutton_set_kinematics, 'Enable', 'off');
+        set(handles.text_start_wingbeat, 'Enable', 'off');
+        set(handles.text_no_wingbeats_to_plot, 'Enable', 'off');
+        set(handles.edit_start_wingbeat, 'Enable', 'off');
+        set(handles.edit_no_wingbeats_to_plot, 'Enable', 'off');
+    case 'Flapping wing'
+        set(handles.radiobutton_dsus, 'Enable', 'on');
+        set(handles.radiobutton_usds, 'Enable', 'on');
+        set(handles.pushbutton_set_kinematics, 'Enable', 'on');
+        set(handles.text_start_wingbeat, 'Enable', 'on');
+        set(handles.text_no_wingbeats_to_plot, 'Enable', 'on');
+        set(handles.edit_start_wingbeat, 'Enable', 'on');
+        set(handles.edit_no_wingbeats_to_plot, 'Enable', 'on');
+end
 
 % UIWAIT makes WAKE wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -646,11 +668,11 @@ h = waitbar(25/100,'Getting inputs...');
 laser_dt = str2double(get(handles.edit_laser_dt, 'string')); % [sec] dt used by the laser between 2 PIV images
 p_cm = str2double(get(handles.edit_dp_cm, 'string')); % [pixel/cm] pixel to cm ratio
 dt = str2double(get(handles.edit_dt, 'string')); % [sec] dt between 2 velocity maps
-chord = str2double(get(handles.edit_chord, 'string')); % [m] bird's chord
-wingspan = str2double(get(handles.edit_b, 'string')); % [m] bird's wingspan that includes the body width
-body_l = str2double(get(handles.edit_bl, 'string')); % [m] bird's body length
-body_w = str2double(get(handles.edit_bw, 'string')); % [m] bird's body width
-weight = str2double(get(handles.edit_w, 'string')); % [kg] bird's weight
+chord = str2double(get(handles.edit_chord, 'string')); % [m] body's characteristic length
+wingspan = str2double(get(handles.edit_b, 'string')); % [m] body's wingspan that includes the body width
+body_l = str2double(get(handles.edit_bl, 'string')); % [m] body's length
+body_w = str2double(get(handles.edit_bw, 'string')); % [m] body's width
+weight = str2double(get(handles.edit_w, 'string')); % [kg] body's weight
 Uinf = str2double(get(handles.edit_Uinf, 'string')); % [m/sec] Free stream velocity
 density = str2double(get(handles.edit_density, 'string')); % [kg/m^3] Air density
 viscosity = str2double(get(handles.edit_viscosity, 'string')); % [Pa*sec] Air viscosity
@@ -667,6 +689,7 @@ contour_max = str2double(get(handles.edit_contour_max, 'string')); % Getting the
 contour_min = str2double(get(handles.edit_contour_min, 'string')); % Getting the minimum contour level
 scale_map = get(handles.radiobutton_scale,'Value'); % Radio button for scaling map
 colormap_selection = str2double(getCurrentPopupString(handles.popupmenu_colormap)); % colormap selection
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
 
 
 close(h);
@@ -687,7 +710,7 @@ if nTime<nf || ni<1 || nf<ni || strcmp(get(handles.edit_ni, 'string'), 'end')==1
 else
     INPUTS = [laser_dt, p_cm, dt, chord, wingspan, body_l, body_w, weight,...
     Uinf, density, viscosity, horizontal_cut, vertical_cut,...
-    ni, nf];
+    ni, nf, body_motion_type_index];
 
     % Performing the main program
     [X_c, Y_c, U, V, UF, VF, DUDX, DUDY, DVDX, DVDY, VORTICITY, SWIRL] = main(MAT_file, INPUTS, cross_parameter);
@@ -957,11 +980,14 @@ function save_inputs_Callback(hObject, eventdata, handles)
 laser_dt = str2double(get(handles.edit_laser_dt, 'string')); % [sec] dt used by the laser between 2 PIV images
 p_cm = str2double(get(handles.edit_dp_cm, 'string')); % [pixel/cm] pixel to cm ratio
 dt = str2double(get(handles.edit_dt, 'string')); % [sec] dt between 2 velocity maps
-chord = str2double(get(handles.edit_chord, 'string')); % [m] bird's chord
-wingspan = str2double(get(handles.edit_b, 'string')); % [m] bird's wingspan that includes the body width
-body_l = str2double(get(handles.edit_bl, 'string')); % [m] bird's body length
-body_w = str2double(get(handles.edit_bw, 'string')); % [m] bird's body width
-weight = str2double(get(handles.edit_w, 'string')); % [kg] bird's weight
+chord = str2double(get(handles.edit_chord, 'string')); % [m] body's characteristic length
+wingspan = str2double(get(handles.edit_b, 'string')); % [m] body's wingspan that includes the body width
+body_l = str2double(get(handles.edit_bl, 'string')); % [m] body's length
+body_w = str2double(get(handles.edit_bw, 'string')); % [m] body's width
+weight = str2double(get(handles.edit_w, 'string')); % [kg] body's weight
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
 Uinf = str2double(get(handles.edit_Uinf, 'string')); % [m/sec] Free stream velocity
 density = str2double(get(handles.edit_density, 'string')); % [kg/m^3] Air density
 viscosity = str2double(get(handles.edit_viscosity, 'string')); % [Pa*sec] Air viscosity
@@ -979,7 +1005,8 @@ INPUTS.weight = weight;
 INPUTS.Uinf = Uinf;
 INPUTS.density = density;
 INPUTS.viscosity = viscosity;
-
+INPUTS.motion_type_name = body_motion_type_name;
+INPUTS.motion_type_index = body_motion_type_index;
 
 [filename, pathname, filterindex] = uiputfile({'*.mat','MAT-files (*.mat)'}, 'Save inputs as');
 if pathname == 0 %if the user pressed cancelled, then we exit this callback
@@ -1013,15 +1040,37 @@ load(mat_file_name); % Load the INPUTS .mat file into an array
 set(handles.edit_laser_dt, 'string', num2str(INPUTS.laser_dt)); % [sec] dt used by the laser between 2 PIV images
 set(handles.edit_dp_cm, 'string', num2str(INPUTS.p_cm)); % [pixel/cm] pixel to cm ratio
 set(handles.edit_dt, 'string', num2str(INPUTS.dt)); % [sec] dt between 2 velocity maps
-set(handles.edit_chord, 'string', num2str(INPUTS.chord)); % [m] bird's chord
-set(handles.edit_b, 'string', num2str(INPUTS.wingspan)); % [m] bird's wingspan that includes the body width
-set(handles.edit_bl, 'string', num2str(INPUTS.body_l)); % [m] bird's body length
-set(handles.edit_bw, 'string', num2str(INPUTS.body_w)); % [m] bird's body width
-set(handles.edit_w, 'string', num2str(INPUTS.weight)); % [kg] bird's weight
+set(handles.edit_chord, 'string', num2str(INPUTS.chord)); % [m] body's characteristic length
+set(handles.edit_b, 'string', num2str(INPUTS.wingspan)); % [m] body's wingspan that includes the body width
+set(handles.edit_bl, 'string', num2str(INPUTS.body_l)); % [m] body's length
+set(handles.edit_bw, 'string', num2str(INPUTS.body_w)); % [m] body's width
+set(handles.edit_w, 'string', num2str(INPUTS.weight)); % [kg] body's weight
+set(handles.popupmenu_motion, 'value', INPUTS.motion_type_index); % body motion type
 set(handles.edit_Uinf, 'string', num2str(INPUTS.Uinf)); % [m/sec] Free stream velocity
 set(handles.edit_density, 'string', num2str(INPUTS.density)); % [kg/m^3] Air density
 set(handles.edit_viscosity, 'string', num2str(INPUTS.viscosity)); % [Pa*sec] Air viscosity
 
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+switch body_motion_type_name
+    case 'Stationary body'
+        set(handles.radiobutton_dsus, 'Enable', 'off');
+        set(handles.radiobutton_usds, 'Enable', 'off');
+        set(handles.pushbutton_set_kinematics, 'Enable', 'off');
+        set(handles.text_start_wingbeat, 'Enable', 'off');
+        set(handles.text_no_wingbeats_to_plot, 'Enable', 'off');
+        set(handles.edit_start_wingbeat, 'Enable', 'off');
+        set(handles.edit_no_wingbeats_to_plot, 'Enable', 'off');
+    case 'Flapping wing'
+        set(handles.radiobutton_dsus, 'Enable', 'on');
+        set(handles.radiobutton_usds, 'Enable', 'on');
+        set(handles.pushbutton_set_kinematics, 'Enable', 'on');
+        set(handles.text_start_wingbeat, 'Enable', 'on');
+        set(handles.text_no_wingbeats_to_plot, 'Enable', 'on');
+        set(handles.edit_start_wingbeat, 'Enable', 'on');
+        set(handles.edit_no_wingbeats_to_plot, 'Enable', 'on');
+end
 
 % --------------------------------------------------------------------
 function Plot_Callback(hObject, eventdata, handles)
@@ -1405,130 +1454,156 @@ if ishandle(1)==1
     close(figure(1));
 end
 
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+        
 if isempty(MAT_file)==1
     name = ('Please load a .mat file first!');
     msgbox(name,  'Error','error');
 else
-    if isempty(DOWNSTROKE)==1
+    if isempty(DOWNSTROKE)==1 && strcmp(body_motion_type_name, 'Flapping wing')==1
         name = ('Please enter kinematic database before calculating drag!');
         msgbox(name, 'Error','error');
+        
     else
+        
         [x_c, time, Cd_steady, Cd_unsteady] = calc_drag(handles); % Calculating the drag
-        max_time = max(time);
+        
+        if isempty(x_c)==0
+            max_time = max(time);
 
-        No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
-        x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
-        x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
-        Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
+            No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
+            x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
+            x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
+            Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
 
-        h = waitbar(100/100, 'Drag plot finished!');
-        close (h);
+            wingbeats_number = No_wingbeats - Start_wingbeat + 1;
 
-        usds = get(handles.radiobutton_usds, 'Value');
-        dsus = get(handles.radiobutton_dsus, 'Value');
+            h = waitbar(100/100, 'Drag plot finished!');
+            close (h);
 
-        % Plotting the drag variation with time
-        figure(1);
-        ax1 = axes;
-        labelsize = 16; % fontsize of the labels
-        fontname = 'Times New Roman'; % font name
-        axessize = 14; % fontsize of the axes  
-        legendsize = 14; % fontsize of the legend
+            usds = get(handles.radiobutton_usds, 'Value');
+            dsus = get(handles.radiobutton_dsus, 'Value');
 
-        switch x_axis
-            case 'x_c'
-            moving_avg = 5;
-            h1(1) = plot(x_c+x_c_gap, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
-                '$C_{d_0}$', 'marker', 'x', 'markersize', 6, 'linewidth', 1.8,...
-                'linestyle', 'none'); hold on;
-            h1(2) = plot(x_c+x_c_gap, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
-                '$C_{d_1}$', 'marker', 'o', 'markersize', 6, 'linewidth', 1.8,...
-                'linestyle', 'none'); hold on;
-            h1(3) = plot(x_c+x_c_gap, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
-                '$C_{d_0}+C_{d_1}$', 'linewidth', 2.2); hold on;
-            set(ax1, 'fontname', fontname, 'fontsize', axessize);
-            xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
+            % Plotting the drag variation with time
+            figure(1);
+            ax1 = axes;
+            labelsize = 16; % fontsize of the labels
+            fontname = 'Times New Roman'; % font name
+            axessize = 14; % fontsize of the axes  
+            legendsize = 14; % fontsize of the legend
 
-            case 't_T'
-            moving_avg = 5;
-            h1(1) = plot(time./max_time, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
-                '$C_{d_0}$', 'marker', 'x', 'markersize', 6, 'linewidth', 1.8,...
-                'linestyle', 'none'); hold on;
-            h1(2) = plot(time./max_time, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
-                '$C_{d_1}$', 'marker', 'o', 'markersize', 6, 'linewidth', 1.8,...
-                'linestyle', 'none'); hold on;
-            h1(3) = plot(time./max_time, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
-                '$C_{d_0}+C_{d_1}$', 'linewidth', 2.2); hold on;
-            set(ax1, 'fontname', fontname, 'fontsize', axessize);
-            xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
-        end
+            switch x_axis
+                case 'x_c'
+                moving_avg = 5;
+                h1(1) = plot(x_c+x_c_gap, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
+                    '$C_{d_0}$', 'marker', 'x', 'markersize', 6, 'linewidth', 1.8,...
+                    'linestyle', 'none'); hold on;
+                h1(2) = plot(x_c+x_c_gap, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
+                    '$C_{d_1}$', 'marker', 'o', 'markersize', 6, 'linewidth', 1.8,...
+                    'linestyle', 'none'); hold on;
+                h1(3) = plot(x_c+x_c_gap, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
+                    '$C_{d_0}+C_{d_1}$', 'linewidth', 2.2); hold on;
+                set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
 
-        ylabel(ax1, '$C_d$', 'interpreter', 'latex', 'fontsize', labelsize,...
-            'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
-        set(ax1, 'box', 'off');
-
-        % get the limits of the y axis
-        y_lim = get(gca, 'ylim');
-
-        % Get the x value of the different phases
-        down = zeros(1, No_wingbeats);
-        up = zeros(1, No_wingbeats);
-        trans = zeros(1, No_wingbeats);
-        for i=Start_wingbeat:No_wingbeats
-            if dsus>usds
-                x_axis_h1 = h1(1).XData;
-                down_ind= DOWNSTROKE(i) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
-                trans_ind = TRANSITION(i) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
-                up_ind = UPSTROKE(i) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
-            elseif usds>dsus
-                x_axis_h1 = h1(1).XData;
-                down_ind = DOWNSTROKE(i) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
-                down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
-                trans_ind = TRANSITION(i) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
-                trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
-                up_ind = UPSTROKE(i) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
+                case 't_T'
+                moving_avg = 5;
+                if wingbeats_number>1 || strcmp(body_motion_type_name, 'Stationary body')==1
+                    h1(1) = plot(time, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
+                        '$C_{d_0}$', 'marker', 'x', 'markersize', 6, 'linewidth', 1.8,...
+                        'linestyle', 'none'); hold on;
+                    h1(2) = plot(time, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
+                        '$C_{d_1}$', 'marker', 'o', 'markersize', 6, 'linewidth', 1.8,...
+                        'linestyle', 'none'); hold on;
+                    h1(3) = plot(time, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
+                        '$C_{d_0}+C_{d_1}$', 'linewidth', 2.2); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t~[\mathrm{sec}]$', 'interpreter', 'latex', 'fontsize', labelsize);
+                else
+                    h1(1) = plot(time./max_time, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
+                        '$C_{d_0}$', 'marker', 'x', 'markersize', 6, 'linewidth', 1.8,...
+                        'linestyle', 'none'); hold on;
+                    h1(2) = plot(time./max_time, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
+                        '$C_{d_1}$', 'marker', 'o', 'markersize', 6, 'linewidth', 1.8,...
+                        'linestyle', 'none'); hold on;
+                    h1(3) = plot(time./max_time, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
+                        '$C_{d_0}+C_{d_1}$', 'linewidth', 2.2); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
+                end
             end
-        end
-        
-        % set x limits
-        x_max = max(x_axis_h1);
-        x_min = min(x_axis_h1);
-        set(gca, 'xlim', [x_min x_max]);                 
 
-        % Paint in gray the upstroke phase
-        for i=Start_wingbeat:No_wingbeats
-            if dsus>usds % Painting in gray the upstroke phase
-                h2(1) = area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                h2(2) = area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-            elseif usds>dsus % Painting in gray the upstroke phase
-                h2(1) = area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                h2(2) = area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+            ylabel(ax1, '$C_d$', 'interpreter', 'latex', 'fontsize', labelsize,...
+                'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
+            set(ax1, 'box', 'off');
+
+            % get the limits of the y axis
+            y_lim = get(gca, 'ylim');
+
+            % set x limits
+            x_axis_h1 = h1.XData;
+            x_max = max(x_axis_h1);
+            x_min = min(x_axis_h1);
+            set(gca, 'xlim', [x_min x_max]);  
+
+            % Get the x value of the different phases
+            if strcmp(body_motion_type_name, 'Flapping wing')==1
+                down = zeros(1, wingbeats_number);
+                up = zeros(1, wingbeats_number);
+                trans = zeros(1, wingbeats_number);
+                for i=1:wingbeats_number
+                    if dsus>usds
+                        n = i + Start_wingbeat - 1;
+                        down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                        down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
+                        trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                        trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
+                        up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                        up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
+                    elseif usds>dsus
+                        n = i + Start_wingbeat - 1;
+                        down_ind = DOWNSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
+                        down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
+                        trans_ind = TRANSITION(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
+                        trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
+                        up_ind = UPSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                        up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
+                    end
+                end
+
+                % Paint in gray the upstroke phase
+                for i=1:wingbeats_number
+                    if dsus>usds % Painting in gray the upstroke phase
+                        area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    elseif usds>dsus % Painting in gray the upstroke phase
+                        area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    end
+                end   
             end
-        end   
 
-        % Plot a line on y=0
-        h2(3) = plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
-        
-        IL = legend(h1, '$C_{d_0}$', '$C_{d_1}$', '$C_{d_0}+C_{d_1}$');
-        set(IL, 'Interpreter', 'latex', 'Location', 'best', 'FontSize', legendsize, 'box', 'off');
-        
-        uistack(h1(1), 'top');
-        uistack(h1(2), 'top');
-        uistack(h1(3), 'top');
-        set(ax1, 'layer', 'top');
+            % Plot a line on y=0
+            plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
 
-    %     if dsus == 1
-    %         text((trans+1)/2 - 0.11, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
-    %         text((0 + trans)/2 - 0.15, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
-    %     elseif usds == 1
-    %         text((trans+1)/2 - 0.15, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
-    %         text((0 + trans)/2 - 0.11, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
-    %     end
+            IL = legend(h1, '$C_{d_0}$', '$C_{d_1}$', '$C_{d_0}+C_{d_1}$');
+            set(IL, 'Interpreter', 'latex', 'Location', 'best', 'FontSize', legendsize, 'box', 'off');
 
+            uistack(h1(1), 'top');
+            uistack(h1(2), 'top');
+            uistack(h1(3), 'top');
+            set(ax1, 'layer', 'top');
+
+        %     if dsus == 1
+        %         text((trans+1)/2 - 0.11, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
+        %         text((0 + trans)/2 - 0.15, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
+        %     elseif usds == 1
+        %         text((trans+1)/2 - 0.15, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
+        %         text((0 + trans)/2 - 0.11, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
+        %     end
+        end
     end
     
 end
@@ -1550,160 +1625,189 @@ if ishandle(1)==1
     close(figure(1));
 end
 
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+
 if isempty(MAT_file)==1
     name = ('Please load a .mat file first!');
     msgbox(name,  'Error','error');
 else
-    if isempty(DOWNSTROKE)==1
+    if isempty(DOWNSTROKE)==1 && strcmp(body_motion_type_name, 'Flapping wing')==1
         name = ('Please enter kinematic database before calculating drag!');
         msgbox(name, 'Error','error');
     else
-        [filename, pathname, filterindex] = uiputfile( ...
+
+        [x_c, time, Cd_steady, Cd_unsteady] = calc_drag(handles);
+        
+        if isempty(x_c)==0
+            [filename, pathname, filterindex] = uiputfile( ...
                {'*.tiff','TIFF File (*.tiff)'; '*.jpg','JPEG File (*.jpg)';...
                '*.pdf','PDF File (*.pdf)'; '*.png','PNG File (*.png)';...
                '*.fig','Figures (*.fig)'; '*.tiff;*.jpg;*.pdf;*.png;*.fig',...
                'All MATLAB Files (*.tiff, *.jpg, *.pdf, *.png, *.fig)';...
                '*.*',  'All Files (*.*)'}, 'Save as');
-        if pathname == 0 %if the user pressed cancelled, then we exit this callback
-            return
-        end
-
-        path = fullfile(pathname, filename); % Concentrate the two strings to one path
-
-        [x_c, time, Cd_steady, Cd_unsteady] = calc_drag(handles);
-        h = waitbar(65/100, 'Saving figure. Please wait!');
-        max_time = max(time);
-        
-        No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
-        x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
-        x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
-        Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
-
-        usds = get(handles.radiobutton_usds, 'Value');
-        dsus = get(handles.radiobutton_dsus, 'Value');
-
-        
-        % Plotting the drag variation with time
-        fig1 = figure(1);
-        ax1 = axes;
-        labelsize = 38; % fontsize of the labels
-        fontname = 'Times New Roman'; % font name
-        axessize = 25; % fontsize of the axes  
-        legendsize = 30; % fontsize of the legend
-
-        switch x_axis
-            case 'x_c'
-            moving_avg = 5;
-            h1(1) = plot(x_c+x_c_gap, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
-                '$C_{d_0}$', 'marker', 'x', 'markersize', 10, 'linewidth', 2.2,...
-                'linestyle', 'none'); hold on;
-            h1(2) = plot(x_c+x_c_gap, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
-                '$C_{d_1}$', 'marker', 'o', 'markersize', 10, 'linewidth', 2.2,...
-                'linestyle', 'none'); hold on;
-            h1(3) = plot(x_c+x_c_gap, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
-                '$C_{d_0}+C_{d_1}$', 'linewidth', 3); hold on;
-            set(ax1, 'fontname', fontname, 'fontsize', axessize);
-            xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
-
-            case 't_T'
-            moving_avg = 5;
-            h1(1) = plot(time./max_time, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
-                '$C_{d_0}$', 'marker', 'x', 'markersize', 10, 'linewidth', 2.2,...
-                'linestyle', 'none'); hold on;
-            h1(2) = plot(time./max_time, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
-                '$C_{d_1}$', 'marker', 'o', 'markersize', 10, 'linewidth', 2.2,...
-                'linestyle', 'none'); hold on;
-            h1(3) = plot(time./max_time, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
-                '$C_{d_0}+C_{d_1}$', 'linewidth', 3); hold on;
-            set(ax1, 'fontname', fontname, 'fontsize', axessize);
-            xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
-        end
-
-        ylabel(ax1, '$C_d$', 'interpreter', 'latex', 'fontsize', labelsize,...
-            'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
-        set(ax1, 'box', 'off');
-
-        set(fig1,'units','normalized','outerposition',[0 0 1 1]); % enlarging the figure to fullscreen 
-        set(fig1, 'PaperType', 'B4', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
-        
-        % get the limits of the y axis
-        y_lim = get(gca, 'ylim');
-        
-        % Get the x value of the different phases
-        down = zeros(1, No_wingbeats);
-        up = zeros(1, No_wingbeats);
-        trans = zeros(1, No_wingbeats);
-        for i=Start_wingbeat:No_wingbeats
-            if dsus>usds
-                x_axis_h1 = h1(1).XData;
-                down_ind= DOWNSTROKE(i) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
-                trans_ind = TRANSITION(i) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
-                up_ind = UPSTROKE(i) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
-            elseif usds>dsus
-                x_axis_h1 = h1(1).XData;
-                down_ind = DOWNSTROKE(i) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
-                down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
-                trans_ind = TRANSITION(i) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
-                trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
-                up_ind = UPSTROKE(i) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
+            if pathname == 0 %if the user pressed cancelled, then we exit this callback
+                return
             end
-        end
-       
-        % set x limits
-        x_max = max(x_axis_h1);
-        x_min = min(x_axis_h1);
-        set(gca, 'xlim', [x_min x_max]);               
-        % Paint in gray the upstroke phase
-        for i=Start_wingbeat:No_wingbeats
-            if dsus>usds % Painting in gray the upstroke phase
-                h2(1) = area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                h2(2) = area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-            elseif usds>dsus % Painting in gray the upstroke phase
-                h2(1) = area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                h2(2) = area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.995,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+
+            path = fullfile(pathname, filename); % Concentrate the two strings to one path
+        
+            h = waitbar(65/100, 'Saving figure. Please wait!');
+            max_time = max(time);
+
+            No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
+            x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
+            x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
+            Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
+
+            wingbeats_number = No_wingbeats - Start_wingbeat + 1;
+
+            usds = get(handles.radiobutton_usds, 'Value');
+            dsus = get(handles.radiobutton_dsus, 'Value');
+
+
+            % Plotting the drag variation with time
+            fig1 = figure(1);
+            ax1 = axes;
+            labelsize = 38; % fontsize of the labels
+            fontname = 'Times New Roman'; % font name
+            axessize = 25; % fontsize of the axes  
+            legendsize = 30; % fontsize of the legend
+
+            switch x_axis
+                case 'x_c'
+                moving_avg = 5;
+                h1(1) = plot(x_c+x_c_gap, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
+                    '$C_{d_0}$', 'marker', 'x', 'markersize', 10, 'linewidth', 2.2,...
+                    'linestyle', 'none'); hold on;
+                h1(2) = plot(x_c+x_c_gap, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
+                    '$C_{d_1}$', 'marker', 'o', 'markersize', 10, 'linewidth', 2.2,...
+                    'linestyle', 'none'); hold on;
+                h1(3) = plot(x_c+x_c_gap, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
+                    '$C_{d_0}+C_{d_1}$', 'linewidth', 3); hold on;
+                set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
+
+
+                case 't_T'
+                moving_avg = 5;
+                if wingbeats_number>1 || strcmp(body_motion_type_name, 'Stationary body')==1
+                    h1(1) = plot(time, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
+                        '$C_{d_0}$', 'marker', 'x', 'markersize', 10, 'linewidth', 2.2,...
+                        'linestyle', 'none'); hold on;
+                    h1(2) = plot(time, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
+                        '$C_{d_1}$', 'marker', 'o', 'markersize', 10, 'linewidth', 2.2,...
+                        'linestyle', 'none'); hold on;
+                    h1(3) = plot(time, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
+                        '$C_{d_0}+C_{d_1}$', 'linewidth', 3); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t~[\mathrm{sec}]$', 'interpreter', 'latex', 'fontsize', labelsize);
+                else
+                    h1(1) = plot(time./max_time, smooth(Cd_steady, moving_avg), 'color', 'b', 'DisplayName',...
+                        '$C_{d_0}$', 'marker', 'x', 'markersize', 10, 'linewidth', 2.2,...
+                        'linestyle', 'none'); hold on;
+                    h1(2) = plot(time./max_time, smooth(Cd_unsteady, moving_avg), 'color', 'r', 'DisplayName',...
+                        '$C_{d_1}$', 'marker', 'o', 'markersize', 10, 'linewidth', 2.2,...
+                        'linestyle', 'none'); hold on;
+                    h1(3) = plot(time./max_time, smooth(Cd_steady + Cd_unsteady, moving_avg), 'color', 'k', 'DisplayName',...
+                        '$C_{d_0}+C_{d_1}$', 'linewidth', 3); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
+                end
             end
-        end   
 
-        % Plot a line on y=0
-        h2(3) = plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
-        IL = legend(h1, '$C_{d_0}$', '$C_{d_1}$', '$C_{d_0}+C_{d_1}$');
-        set(IL, 'Interpreter', 'latex', 'Location', 'best', 'FontSize', legendsize, 'box', 'off');
-        
-        uistack(h1(1), 'top');
-        uistack(h1(2), 'top');
-        uistack(h1(3), 'top');
-        set(ax1, 'layer', 'top');
-%         if dsus == 1
-%             text((trans+1)/2 - 0.06, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
-%             text((0 + trans)/2 - 0.08, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
-%         elseif usds == 1
-%             text((trans+1)/2 - 0.08, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
-%             text((0 + trans)/2 - 0.06, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
-%         end
-        
-        close (h);
-        h = waitbar(85/100, 'Saving figure. Please wait!');
-        if filterindex == 1 % if the user want to save a tiff image
-            print(fig1, path, '-dtiff', '-r600');
-        elseif filterindex == 2 % if the user want to save a jpeg image
-            print(fig1, path, '-djpeg', '-r600');
-        elseif filterindex == 3 % if the user want to save a tiff image
-            set(fig1, 'PaperType', 'B4', 'PaperOrientation', 'landscape', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
-            print(fig1, path, '-dpdf', '-r600');
-        elseif filterindex == 4 % if the user want to save a png image
-            print(fig1, path, '-dpng', '-r600');
-        else
-            saveas(fig1, path); % saving the image according to the specified format by the user
+            ylabel(ax1, '$C_d$', 'interpreter', 'latex', 'fontsize', labelsize,...
+                'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
+            set(ax1, 'box', 'off');
+
+            set(fig1,'units','normalized','outerposition',[0 0 1 1]); % enlarging the figure to fullscreen 
+            set(fig1, 'PaperType', 'B4', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
+
+            % get the limits of the y axis
+            y_lim = get(gca, 'ylim');
+
+            % set x limits
+            x_axis_h1 = h1.XData;
+            x_max = max(x_axis_h1);
+            x_min = min(x_axis_h1);
+            set(gca, 'xlim', [x_min x_max]);  
+
+            if strcmp(body_motion_type_name, 'Flapping wing')==1
+                % Get the x value of the different phases
+                down = zeros(1, wingbeats_number);
+                up = zeros(1, wingbeats_number);
+                trans = zeros(1, wingbeats_number);
+                for i=1:wingbeats_number
+                    if dsus>usds
+                        n = i + Start_wingbeat - 1;
+                        down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                        down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
+                        trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                        trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
+                        up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                        up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
+                    elseif usds>dsus
+                        n = i + Start_wingbeat - 1;
+                        down_ind = DOWNSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
+                        down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
+                        trans_ind = TRANSITION(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
+                        trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
+                        up_ind = UPSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                        up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
+                    end
+                end
+
+                % Paint in gray the upstroke phase
+                for i=1:wingbeats_number
+                    if dsus>usds % Painting in gray the upstroke phase
+                        area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    elseif usds>dsus % Painting in gray the upstroke phase
+                        area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    end
+                end   
+            end
+
+            % Plot a line on y=0
+            plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
+
+            IL = legend(h1, '$C_{d_0}$', '$C_{d_1}$', '$C_{d_0}+C_{d_1}$');
+            set(IL, 'Interpreter', 'latex', 'Location', 'best', 'FontSize', legendsize, 'box', 'off');
+
+            uistack(h1(1), 'top');
+            uistack(h1(2), 'top');
+            uistack(h1(3), 'top');
+            set(ax1, 'layer', 'top');
+    %         if dsus == 1
+    %             text((trans+1)/2 - 0.06, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %             text((0 + trans)/2 - 0.08, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %         elseif usds == 1
+    %             text((trans+1)/2 - 0.08, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %             text((0 + trans)/2 - 0.06, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %         end
+
+            close (h);
+            h = waitbar(85/100, 'Saving figure. Please wait!');
+            if filterindex == 1 % if the user want to save a tiff image
+                print(fig1, path, '-dtiff', '-r600');
+            elseif filterindex == 2 % if the user want to save a jpeg image
+                print(fig1, path, '-djpeg', '-r600');
+            elseif filterindex == 3 % if the user want to save a tiff image
+                set(fig1, 'PaperType', 'B4', 'PaperOrientation', 'landscape', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
+                print(fig1, path, '-dpdf', '-r600');
+            elseif filterindex == 4 % if the user want to save a png image
+                print(fig1, path, '-dpng', '-r600');
+            else
+                saveas(fig1, path); % saving the image according to the specified format by the user
+            end
+            close(h);
+            h = waitbar(100/100, 'Figure Saved!');
+            close(h);
+
+            close(fig1); % closing the new figure
         end
-        close(h);
-        h = waitbar(100/100, 'Figure Saved!');
-        close(h);
-
-        close(fig1); % closing the new figure
     end
 end
 
@@ -1723,43 +1827,67 @@ No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % N
 usds = get(handles.radiobutton_usds, 'Value');
 dsus = get(handles.radiobutton_dsus, 'Value');
 Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+ni = str2double(get(handles.edit_ni, 'string')); % Initial velocity map in the sequence
+nf = str2double(get(handles.edit_nf, 'string')); % Final velocity map in the sequence
+p_cm = str2double(get(handles.edit_dp_cm, 'string')); % [pixel/cm] pixel to cm ratio
+dt = str2double(get(handles.edit_dt, 'string')); % [sec] dt between 2 velocity maps
+chord = str2double(get(handles.edit_chord, 'string')); % [m] body's characteristic length
+Uinf = str2double(get(handles.edit_Uinf, 'string')); % [m/sec] Free stream velocity
+density = str2double(get(handles.edit_density, 'string')); % [kg/m^3] Air density
+laser_dt = str2double(get(handles.edit_laser_dt, 'string')); % [sec] dt used by the laser between 2 PIV images
+wingspan = str2double(get(handles.edit_b, 'string')); % [m] body's wingspan that includes the body width
+body_l = str2double(get(handles.edit_bl, 'string')); % [m] body's length
+body_w = str2double(get(handles.edit_bw, 'string')); % [m] body's width
+weight = str2double(get(handles.edit_w, 'string')); % [kg] body's weight
+viscosity = str2double(get(handles.edit_viscosity, 'string')); % [Pa*sec] Air viscosity
+horizontal_cut = str2double(get(handles.edit_h_cut, 'string')); % Horizontal cut the user want to perform for the PIV velocity maps
+vertical_cut = str2double(get(handles.edit_v_cut, 'string')); % Vertical cut the user want to perform for the PIV velocity maps
+            
+switch body_motion_type_name
+    case 'Stationary body'
+        Wingbeats_start = ni;
+        Wingbeats_end = nf;
+        if Wingbeats_end > nTime - 1 || Wingbeats_start < 2 || (Wingbeats_end-Wingbeats_start)<2
+            name = (['Please choose a legit range for the wake images! Should be from 2 to ', num2str(nTime-1), '...']);
+            msgbox(name,  'Error','error')
+            x_c=[]; time=[]; Cd_steady=[]; Cd_unsteady=[];
+        else
+            INPUTS = [laser_dt, p_cm, dt, chord, wingspan, body_l, body_w, weight,...
+            Uinf, density, viscosity, horizontal_cut, vertical_cut,...
+            Wingbeats_start, Wingbeats_end, body_motion_type_index];
+        
+            % calculating the drag
+            [x_c, time, Cd_steady, Cd_unsteady] = drag_force(MAT_file, INPUTS); % Drag force calculation algorithm
+        end
+    case 'Flapping wing'
+        if dsus>usds
+            Wingbeats_start = DOWNSTROKE(Start_wingbeat);
+            Wingbeats_end = UPSTROKE(No_wingbeats);
+        elseif usds>dsus
+            Wingbeats_start = UPSTROKE(Start_wingbeat);
+            Wingbeats_end = DOWNSTROKE(No_wingbeats);
+        end
 
-if dsus>usds
-    Wingbeats_start = DOWNSTROKE(Start_wingbeat);
-    Wingbeats_end = UPSTROKE(No_wingbeats);
-elseif usds>dsus
-    Wingbeats_start = UPSTROKE(Start_wingbeat);
-    Wingbeats_end = DOWNSTROKE(No_wingbeats);
+        if Wingbeats_end > nTime - 1 || Wingbeats_start < 2 || (Wingbeats_end-Wingbeats_start)<2
+            name = (['Please choose a legit range for the wingbeat cycle! Should be from 2 to ', num2str(nTime-1), '...']);
+            msgbox(name,  'Error','error')
+            x_c=[]; time=[]; Cd_steady=[]; Cd_unsteady=[];
+        else
+            INPUTS = [laser_dt, p_cm, dt, chord, wingspan, body_l, body_w, weight,...
+            Uinf, density, viscosity, horizontal_cut, vertical_cut,...
+            Wingbeats_start, Wingbeats_end, body_motion_type_index];
+        
+            % calculating the drag
+            [x_c, time, Cd_steady, Cd_unsteady] = drag_force(MAT_file, INPUTS); % Drag force calculation algorithm
+        end
 end
+close(h)
 
-if Wingbeats_end > nTime - 1 || Wingbeats_start < 2
-    name = (['Please choose a legit range for the wingbeat cycle! Should be from 2 to ', num2str(nTime-1), '...']);
-    msgbox(name,  'Error','error')
-else
-    p_cm = str2double(get(handles.edit_dp_cm, 'string')); % [pixel/cm] pixel to cm ratio
-    dt = str2double(get(handles.edit_dt, 'string')); % [sec] dt between 2 velocity maps
-    chord = str2double(get(handles.edit_chord, 'string')); % [m] bird's chord
-    Uinf = str2double(get(handles.edit_Uinf, 'string')); % [m/sec] Free stream velocity
-    density = str2double(get(handles.edit_density, 'string')); % [kg/m^3] Air density
-    laser_dt = str2double(get(handles.edit_laser_dt, 'string')); % [sec] dt used by the laser between 2 PIV images
-    wingspan = str2double(get(handles.edit_b, 'string')); % [m] bird's wingspan that includes the body width
-    body_l = str2double(get(handles.edit_bl, 'string')); % [m] bird's body length
-    body_w = str2double(get(handles.edit_bw, 'string')); % [m] bird's body width
-    weight = str2double(get(handles.edit_w, 'string')); % [kg] bird's weight
-    viscosity = str2double(get(handles.edit_viscosity, 'string')); % [Pa*sec] Air viscosity
-    horizontal_cut = str2double(get(handles.edit_h_cut, 'string')); % Horizontal cut the user want to perform for the PIV velocity maps
-    vertical_cut = str2double(get(handles.edit_v_cut, 'string')); % Vertical cut the user want to perform for the PIV velocity maps
 
-    INPUTS = [laser_dt, p_cm, dt, chord, wingspan, body_l, body_w, weight,...
-    Uinf, density, viscosity, horizontal_cut, vertical_cut,...
-    Wingbeats_start, Wingbeats_end];
 
-    % calculating the drag
-    [x_c, time, Cd_steady, Cd_unsteady] = drag_force(MAT_file, INPUTS); % Drag force calculation algorithm
-    close(h)
-
-end
-    
 
 
 % --- Executes on selection change in popupmenu_colormap.
@@ -1791,184 +1919,196 @@ function plot_lift_Callback(hObject, eventdata, handles)
 % hObject    handle to plot_lift (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-global DOWNSTROKE;
+global DOWNSTROKE
 global TRANSITION
-global UPSTROKE;
-global MAT_file;
+global UPSTROKE
+global MAT_file
 global LIFT_method;
+
 
 % close figure(1) if it's exist
 if ishandle(1)==1
     close(figure(1));
 end
 
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+
 if isempty(MAT_file)==1
     name = ('Please load a .mat file first!');
     msgbox(name,  'Error','error');
 else
-    if isempty(DOWNSTROKE)==1
-        name = ('Please enter kinematic database before calculating drag!');
+    if isempty(DOWNSTROKE)==1 && strcmp(body_motion_type_name, 'Flapping wing')==1
+        name = ('Please enter kinematic database before calculating lift!');
         msgbox(name, 'Error','error');
     else      
+        % calculating the vertical momentum in the wake
+        if LIFT_method<3
+            pushbutton_wake_gen_Callback(0, 0, handles);
+        end
         [x_c, time, CIRC_NORM, Cl_circ] = calc_lift(handles); % Calculating the commulative lift coefficient 
-        h = waitbar(100/100, 'Unsteady lift plot finished!');
-        close (h);
-        max_time = max(time);
-
-        No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
-        x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
-        x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
-        Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
-        ni = str2double(get(handles.edit_ni, 'string')); % Initial velocity map in the sequence
-        nf = str2double(get(handles.edit_nf, 'string')); % Final velocity map in the sequence
         
-        wingbeats_number = No_wingbeats - Start_wingbeat + 1;
+        if isempty(x_c)==0
+        
+            h = waitbar(100/100, 'Unsteady lift plot finished!');
+            close (h);
+            max_time = max(time);
 
-        usds = get(handles.radiobutton_usds, 'Value');
-        dsus = get(handles.radiobutton_dsus, 'Value');
+            No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
+            x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
+            x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
+            Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
+            ni = str2double(get(handles.edit_ni, 'string')); % Initial velocity map in the sequence
+            nf = str2double(get(handles.edit_nf, 'string')); % Final velocity map in the sequence
 
-        % Plotting the drag variation with time
-        figure(1);
-        ax1 = axes;
-        labelsize = 16; % fontsize of the labels
-        fontname = 'Times New Roman'; % font name
-        axessize = 14; % fontsize of the axes  
+            wingbeats_number = No_wingbeats - Start_wingbeat + 1;
 
-        switch x_axis
-            case 'x_c'
-            moving_avg = 5;
-%             moving_avg = round(0.05*length(Cl_circ));
-            h1 = plot(x_c+x_c_gap, smooth(Cl_circ, moving_avg), 'color', 'b', 'linewidth', 3, 'linestyle', '-'); hold on;
-            set(ax1, 'fontname', fontname, 'fontsize', axessize);
-            xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
+            usds = get(handles.radiobutton_usds, 'Value');
+            dsus = get(handles.radiobutton_dsus, 'Value');
 
-            case 't_T'
-            moving_avg = 5;
-            if wingbeats_number>1
-                h1 = plot(time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
+            % Plotting the drag variation with time
+            figure(1);
+            ax1 = axes;
+            labelsize = 16; % fontsize of the labels
+            fontname = 'Times New Roman'; % font name
+            axessize = 14; % fontsize of the axes  
+
+            switch x_axis
+                case 'x_c'
+                moving_avg = 5;
+    %             moving_avg = round(0.05*length(Cl_circ));
+                h1 = plot(x_c+x_c_gap, smooth(Cl_circ, moving_avg), 'color', 'b', 'linewidth', 3, 'linestyle', '-'); hold on;
                 set(ax1, 'fontname', fontname, 'fontsize', axessize);
-                xlabel(ax1, '$t~[\mathrm{sec}]$', 'interpreter', 'latex', 'fontsize', labelsize);
-            else
-                h1 = plot(time./max_time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
-                set(ax1, 'fontname', fontname, 'fontsize', axessize);
-                xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
-            end
-        end
+                xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
 
-        ylabel(ax1, '$\Delta C_{l_{circ}}$', 'interpreter', 'latex', 'fontsize', labelsize,...
-            'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
-        set(ax1, 'box', 'off');
-
-        % get the limits of the y axis
-        y_lim = get(gca, 'ylim');
-
-        % Get the x value of the different phases
-        down = zeros(1, wingbeats_number);
-        up = zeros(1, wingbeats_number);
-        trans = zeros(1, wingbeats_number);
-        for i=1:wingbeats_number
-            if dsus>usds
-                x_axis_h1 = h1.XData;
-                n = i + Start_wingbeat - 1;
-                if LIFT_method>2
-                    down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                    down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
-                    trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
-                    up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                    up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
+                case 't_T'
+                moving_avg = 5;
+                if wingbeats_number>1 || strcmp(body_motion_type_name, 'Stationary body')==1
+                    h1 = plot(time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t~[\mathrm{sec}]$', 'interpreter', 'latex', 'fontsize', labelsize);
                 else
-                    down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                    trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                    tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    if tmp1==0 
-                        down(i) = x_axis_h1(1);
-                    else
-                        down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp2==0 
-                        trans(i) = x_axis_h1(1);
-                    else
-                        trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp3==0 
-                        up(i) = x_axis_h1(1);
-                    else
-                        up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
-                    end
-                end
-            elseif usds>dsus
-                x_axis_h1 = h1.XData;
-                n = i + Start_wingbeat - 1;
-                if LIFT_method>2
-                    down_ind = DOWNSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
-                    down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
-                    trans_ind = TRANSITION(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
-                    trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
-                    up_ind = UPSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
-                else
-                    down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                    trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                    tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    if tmp1==0 
-                        down(i) = x_axis_h1(1);
-                    else
-                        down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp2==0 
-                        trans(i) = x_axis_h1(1);
-                    else
-                        trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp3==0 
-                        up(i) = x_axis_h1(1);
-                    else
-                        up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
-                    end
+                    h1 = plot(time./max_time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
                 end
             end
-        end
-        
-        % set x limits
-        x_max = max(x_axis_h1);
-        x_min = min(x_axis_h1);
-        set(gca, 'xlim', [x_min x_max]);      
 
-        % Paint in gray the upstroke phase
-        for i=1:wingbeats_number
-            if dsus>usds % Painting in gray the upstroke phase
-                area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-            elseif usds>dsus % Painting in gray the upstroke phase
-                area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+            ylabel(ax1, '$\Delta C_{l_{circ}}$', 'interpreter', 'latex', 'fontsize', labelsize,...
+                'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
+            set(ax1, 'box', 'off');
+
+            % get the limits of the y axis
+            y_lim = get(gca, 'ylim');
+
+            % set x limits
+            x_axis_h1 = h1.XData;
+            x_max = max(x_axis_h1);
+            x_min = min(x_axis_h1);
+            set(gca, 'xlim', [x_min x_max]);      
+            
+            % Get the x value of the different phases
+            if strcmp(body_motion_type_name, 'Flapping wing')==1
+                down = zeros(1, wingbeats_number);
+                up = zeros(1, wingbeats_number);
+                trans = zeros(1, wingbeats_number);
+                for i=1:wingbeats_number
+                    if dsus>usds
+                        n = i + Start_wingbeat - 1;
+                        if LIFT_method>2
+                            down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                            down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
+                            trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
+                            up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                            up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
+                        else
+                            down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                            trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                            tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            if tmp1==0 
+                                down(i) = x_axis_h1(1);
+                            else
+                                down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp2==0 
+                                trans(i) = x_axis_h1(1);
+                            else
+                                trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp3==0 
+                                up(i) = x_axis_h1(1);
+                            else
+                                up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
+                            end
+                        end
+                    elseif usds>dsus
+                        n = i + Start_wingbeat - 1;
+                        if LIFT_method>2
+                            down_ind = DOWNSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
+                            down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
+                            trans_ind = TRANSITION(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
+                            trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
+                            up_ind = UPSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
+                        else
+                            down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                            trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                            tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            if tmp1==0 
+                                down(i) = x_axis_h1(1);
+                            else
+                                down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp2==0 
+                                trans(i) = x_axis_h1(1);
+                            else
+                                trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp3==0 
+                                up(i) = x_axis_h1(1);
+                            else
+                                up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
+                            end
+                        end
+                    end
+                end
+
+                % Paint in gray the upstroke phase
+                for i=1:wingbeats_number
+                    if dsus>usds % Painting in gray the upstroke phase
+                        area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    elseif usds>dsus % Painting in gray the upstroke phase
+                        area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    end
+                end   
             end
-        end   
 
-        % Plot a line on y=0
-        plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
-        
+            % Plot a line on y=0
+            plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
 
-        uistack(h1, 'top');
-        set(ax1, 'layer', 'top');
-   
-% 
-%         if dsus == 1
-%             text((trans_dx_c+x_c(1))/2 - 0.11, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
-%             text((x_c(end) + trans_dx_c)/2 - 0.15, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
-%         elseif usds == 1
-%             text((trans_dx_c+x_c(1))/2 - 0.15, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
-%             text((x_c(end) + trans_dx_c)/2 - 0.11, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
-%         end
-        
+
+            uistack(h1, 'top');
+            set(ax1, 'layer', 'top');
+
+    % 
+    %         if dsus == 1
+    %             text((trans_dx_c+x_c(1))/2 - 0.11, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
+    %             text((x_c(end) + trans_dx_c)/2 - 0.15, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
+    %         elseif usds == 1
+    %             text((trans_dx_c+x_c(1))/2 - 0.15, -0.15, 'upstroke', 'fontsize', labelsize, 'fontname', fontname);
+    %             text((x_c(end) + trans_dx_c)/2 - 0.11, -0.15, 'downstroke', 'fontsize', labelsize, 'fontname', fontname);
+    %         end
+        end
     end
     
 end
@@ -1979,216 +2119,229 @@ function save_lift_Callback(hObject, eventdata, handles)
 % hObject    handle to save_lift (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global DOWNSTROKE;
+global DOWNSTROKE
 global TRANSITION
-global UPSTROKE;
-global MAT_file;
+global UPSTROKE
+global MAT_file
 global LIFT_method;
-
 
 % close figure(1) if it's exist
 if ishandle(1)==1
     close(figure(1));
 end
 
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+
 if isempty(MAT_file)==1
     name = ('Please load a .mat file first!');
     msgbox(name,  'Error','error');
 else
-    if isempty(DOWNSTROKE)==1
-        name = ('Please enter kinematic database before calculating drag!');
+    if isempty(DOWNSTROKE)==1 && strcmp(body_motion_type_name, 'Flapping wing')==1
+        name = ('Please enter kinematic database before calculating lift!');
         msgbox(name, 'Error','error');
     else
-        [filename, pathname, filterindex] = uiputfile( ...
-               {'*.tiff','TIFF File (*.tiff)'; '*.jpg','JPEG File (*.jpg)';...
-               '*.pdf','PDF File (*.pdf)'; '*.png','PNG File (*.png)';...
-               '*.fig','Figures (*.fig)'; '*.tiff;*.jpg;*.pdf;*.png;*.fig',...
-               'All MATLAB Files (*.tiff, *.jpg, *.pdf, *.png, *.fig)';...
-               '*.*',  'All Files (*.*)'}, 'Save as');
-        if pathname == 0 %if the user pressed cancelled, then we exit this callback
-            return
-        end
         
-        path = fullfile(pathname, filename); % Concentrate the two strings to one path
-
+        % calculating the vertical momentum in the wake
+        if LIFT_method<3
+            pushbutton_wake_gen_Callback(0, 0, handles);
+        end
         [x_c, time, CIRC_NORM, Cl_circ] = calc_lift(handles); % Calculating the commulative lift coefficient 
-        h = waitbar(65/100, 'Saving figure. Please wait!');
-        max_time = max(time);
         
-        No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
-        x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
-        x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
-        Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
-
-        wingbeats_number = No_wingbeats - Start_wingbeat + 1;
-
-        usds = get(handles.radiobutton_usds, 'Value');
-        dsus = get(handles.radiobutton_dsus, 'Value');
-
-        
-        % Plotting the drag variation with time
-        fig1 = figure(1);
-        ax1 = axes;
-        labelsize = 38; % fontsize of the labels
-        fontname = 'Times New Roman'; % font name
-        axessize = 25; % fontsize of the axes  
-
-        switch x_axis
-            case 'x_c'
-            moving_avg = 5;
-            h1 = plot(x_c+x_c_gap, smooth(Cl_circ, moving_avg), 'color', 'b', 'linewidth', 3,...
-                'linestyle', '-'); hold on;
-            set(ax1, 'fontname', fontname, 'fontsize', axessize);
-            xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
-
+        if isempty(x_c)==0
             
-            case 't_T'
-            moving_avg = 5;
-            if wingbeats_number>1
-                h1 = plot(time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
+            [filename, pathname, filterindex] = uiputfile( ...
+                   {'*.tiff','TIFF File (*.tiff)'; '*.jpg','JPEG File (*.jpg)';...
+                   '*.pdf','PDF File (*.pdf)'; '*.png','PNG File (*.png)';...
+                   '*.fig','Figures (*.fig)'; '*.tiff;*.jpg;*.pdf;*.png;*.fig',...
+                   'All MATLAB Files (*.tiff, *.jpg, *.pdf, *.png, *.fig)';...
+                   '*.*',  'All Files (*.*)'}, 'Save as');
+            if pathname == 0 %if the user pressed cancelled, then we exit this callback
+                return
+            end
+
+            path = fullfile(pathname, filename); % Concentrate the two strings to one path
+
+            h = waitbar(65/100, 'Saving figure. Please wait!');
+            max_time = max(time);
+
+            No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % No. of wingbeats to plot
+            x_axis = getCurrentPopupString(handles.popupmenu_x_axis); % x axis chosen by the user
+            x_c_gap = str2double(get(handles.edit_x_c_gap, 'string')); % Gap for the first wingbeat in x/c length
+            Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
+
+            wingbeats_number = No_wingbeats - Start_wingbeat + 1;
+
+            usds = get(handles.radiobutton_usds, 'Value');
+            dsus = get(handles.radiobutton_dsus, 'Value');
+
+
+            % Plotting the drag variation with time
+            fig1 = figure(1);
+            ax1 = axes;
+            labelsize = 38; % fontsize of the labels
+            fontname = 'Times New Roman'; % font name
+            axessize = 25; % fontsize of the axes  
+
+            switch x_axis
+                case 'x_c'
+                moving_avg = 5;
+                h1 = plot(x_c+x_c_gap, smooth(Cl_circ, moving_avg), 'color', 'b', 'linewidth', 3,...
+                    'linestyle', '-'); hold on;
                 set(ax1, 'fontname', fontname, 'fontsize', axessize);
-                xlabel(ax1, '$t~[\mathrm{sec}]$', 'interpreter', 'latex', 'fontsize', labelsize);
+                xlabel(ax1, '$x/c$', 'interpreter', 'latex', 'fontsize', labelsize);   
+
+
+                case 't_T'
+                moving_avg = 5;
+                if wingbeats_number>1 || strcmp(body_motion_type_name, 'Stationary body')==1
+                    h1 = plot(time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t~[\mathrm{sec}]$', 'interpreter', 'latex', 'fontsize', labelsize);
+                else
+                    h1 = plot(time./max_time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
+                    set(ax1, 'fontname', fontname, 'fontsize', axessize);
+                    xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
+                end
+            end
+
+            ylabel(ax1, '$\Delta C_{l_{circ}}$', 'interpreter', 'latex', 'fontsize', labelsize,...
+                'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
+            set(ax1, 'box', 'off');
+
+            set(fig1,'units','normalized','outerposition',[0 0 1 1]); % enlarging the figure to fullscreen 
+            set(fig1, 'PaperType', 'B4', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
+
+            % get the limits of the y axis
+            y_lim = get(gca, 'ylim');
+
+            % set x limits
+            x_axis_h1 = h1.XData;
+            x_max = max(x_axis_h1);
+            x_min = min(x_axis_h1);
+            set(gca, 'xlim', [x_min x_max]);    
+            
+            % Get the x value of the different phases
+            if strcmp(body_motion_type_name, 'Flapping wing')==1
+                down = zeros(1, wingbeats_number);
+                up = zeros(1, wingbeats_number);
+                trans = zeros(1, wingbeats_number);
+                for i=1:wingbeats_number
+                    if dsus>usds
+                        n = i + Start_wingbeat - 1;
+                        if LIFT_method>2
+                            down_ind= DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                            down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
+                            trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
+                            up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                            up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
+                        else
+                            down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                            trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                            tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            if tmp1==0 
+                                down(i) = x_axis_h1(1);
+                            else
+                                down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp2==0 
+                                trans(i) = x_axis_h1(1);
+                            else
+                                trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp3==0 
+                                up(i) = x_axis_h1(1);
+                            else
+                                up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
+                            end
+                        end
+                    elseif usds>dsus
+                        n = i + Start_wingbeat - 1;
+                        if LIFT_method>2
+                            down_ind = DOWNSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
+                            down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
+                            trans_ind = TRANSITION(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
+                            trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
+                            up_ind = UPSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
+                        else
+                            down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
+                            trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
+                            up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
+                            tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
+                            if tmp1==0 
+                                down(i) = x_axis_h1(1);
+                            else
+                                down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp2==0 
+                                trans(i) = x_axis_h1(1);
+                            else
+                                trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
+                            end
+                            if tmp3==0 
+                                up(i) = x_axis_h1(1);
+                            else
+                                up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
+                            end
+                        end
+                    end
+                end
+
+                % Paint in gray the upstroke phase
+                for i=1:wingbeats_number
+                    if dsus>usds % Painting in gray the upstroke phase
+                        area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    elseif usds>dsus % Painting in gray the upstroke phase
+                        area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                        area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
+                    end
+                end   
+            end
+
+            % Plot a line on y=0
+            plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
+
+
+            uistack(h1, 'top');
+            set(ax1, 'layer', 'top');
+
+    %         if dsus == 1
+    %             text((trans_dx_c+x_c(1))/2 - 0.06, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %             text((x_c(end) + trans_dx_c)/2 - 0.08, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %         elseif usds == 1
+    %             text((trans_dx_c+x_c(1))/2 - 0.08, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %             text((x_c(end) + trans_dx_c)/2 - 0.06, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
+    %         end
+
+            close (h);
+            h = waitbar(85/100, 'Saving figure. Please wait!');
+            if filterindex == 1 % if the user want to save a tiff image
+                print(fig1, path, '-dtiff', '-r600');
+            elseif filterindex == 2 % if the user want to save a jpeg image
+                print(fig1, path, '-djpeg', '-r600');
+            elseif filterindex == 3 % if the user want to save a tiff image
+                set(fig1, 'PaperType', 'B4', 'PaperOrientation', 'landscape', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
+                print(fig1, path, '-dpdf', '-r600');
+            elseif filterindex == 4 % if the user want to save a png image
+                print(fig1, path, '-dpng', '-r600');
             else
-                h1 = plot(time./max_time, smooth(Cl_circ, moving_avg), 'color', 'b','linewidth', 3, 'linestyle', '-'); hold on;
-                set(ax1, 'fontname', fontname, 'fontsize', axessize);
-                xlabel(ax1, '$t/T$', 'interpreter', 'latex', 'fontsize', labelsize);
+                saveas(fig1, path); % saving the image according to the specified format by the user
             end
+            close(h);
+            h = waitbar(100/100, 'Figure Saved!');
+            close(h);
+
+            close(fig1); % closing the new figure
         end
-
-        ylabel(ax1, '$\Delta C_{l_{circ}}$', 'interpreter', 'latex', 'fontsize', labelsize,...
-            'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
-        set(ax1, 'box', 'off');
-
-        set(fig1,'units','normalized','outerposition',[0 0 1 1]); % enlarging the figure to fullscreen 
-        set(fig1, 'PaperType', 'B4', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
-        
-        % get the limits of the y axis
-        y_lim = get(gca, 'ylim');
-
-        % Get the x value of the different phases
-        down = zeros(1, wingbeats_number);
-        up = zeros(1, wingbeats_number);
-        trans = zeros(1, wingbeats_number);
-        for i=1:wingbeats_number
-            if dsus>usds
-                n = i + Start_wingbeat - 1;
-                x_axis_h1 = h1.XData;
-                if LIFT_method>2
-                    down_ind= DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                    down(i) = x_axis_h1(down_ind); % value of the x axis for the start of the downstroke phase
-                    trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the upstroke phase
-                    up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                    up(i) = x_axis_h1(up_ind); % value of the x axis for the end of the upstroke phase
-                else
-                    down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                    trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                    tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    if tmp1==0 
-                        down(i) = x_axis_h1(1);
-                    else
-                        down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp2==0 
-                        trans(i) = x_axis_h1(1);
-                    else
-                        trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp3==0 
-                        up(i) = x_axis_h1(1);
-                    else
-                        up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
-                    end
-                end
-            elseif usds>dsus
-                n = i + Start_wingbeat - 1;
-                x_axis_h1 = h1.XData;
-                if LIFT_method>2
-                    down_ind = DOWNSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the end of the downstroke phase 
-                    down(i) = x_axis_h1(down_ind); % value of the x axis for the end of the downstroke phase 
-                    trans_ind = TRANSITION(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase
-                    trans(i) = x_axis_h1(trans_ind); % value of the x axis for the start of the downstroke phase
-                    up_ind = UPSTROKE(n) - UPSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    up(i) = x_axis_h1(up_ind); % value of the x axis for the start of the upstroke phase
-                else
-                    down_ind = DOWNSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the downstroke phase 
-                    trans_ind = TRANSITION(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the start of the upstroke phase
-                    up_ind = UPSTROKE(n) - DOWNSTROKE(Start_wingbeat) + 1; % index of the end of the upstroke phase
-                    tmp1 = round((down_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp2 = round((trans_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    tmp3 = round((up_ind-1)/(nf-ni+1)*length(x_axis_h1));
-                    if tmp1==0 
-                        down(i) = x_axis_h1(1);
-                    else
-                        down(i) = x_axis_h1(tmp1); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp2==0 
-                        trans(i) = x_axis_h1(1);
-                    else
-                        trans(i) = x_axis_h1(tmp2); % value of the x axis for the start of the downstroke phase
-                    end
-                    if tmp3==0 
-                        up(i) = x_axis_h1(1);
-                    else
-                        up(i) = x_axis_h1(tmp3); % value of the x axis for the start of the downstroke phase
-                    end
-                end
-            end
-        end
-        
-        % set x limits
-        x_max = max(x_axis_h1);
-        x_min = min(x_axis_h1);
-        set(gca, 'xlim', [x_min x_max]);                 
-
-        % Paint in gray the upstroke phase
-        for i=1:wingbeats_number
-            if dsus>usds % Painting in gray the upstroke phase
-                area([trans(i) up(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                area([trans(i) up(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-            elseif usds>dsus % Painting in gray the upstroke phase
-                area([up(i) trans(i)],[y_lim(1) y_lim(1)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-                area([up(i) trans(i)],[y_lim(2) y_lim(2)]*0.998,'FaceColor',[.85 .85 .85], 'EdgeColor','none'); hold on;
-            end
-        end   
-
-        % Plot a line on y=0
-        plot([x_axis_h1(1) x_axis_h1(end)], [0 0], '--','color',[.5 .5 .5], 'linewidth', 2); hold on;
-        
-
-        uistack(h1, 'top');
-        set(ax1, 'layer', 'top');
-
-%         if dsus == 1
-%             text((trans_dx_c+x_c(1))/2 - 0.06, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
-%             text((x_c(end) + trans_dx_c)/2 - 0.08, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
-%         elseif usds == 1
-%             text((trans_dx_c+x_c(1))/2 - 0.08, -0.15, 'upstroke', 'fontsize', legendsize, 'fontname', fontname);
-%             text((x_c(end) + trans_dx_c)/2 - 0.06, -0.15, 'downstroke', 'fontsize', legendsize, 'fontname', fontname);
-%         end
-        
-        close (h);
-        h = waitbar(85/100, 'Saving figure. Please wait!');
-        if filterindex == 1 % if the user want to save a tiff image
-            print(fig1, path, '-dtiff', '-r600');
-        elseif filterindex == 2 % if the user want to save a jpeg image
-            print(fig1, path, '-djpeg', '-r600');
-        elseif filterindex == 3 % if the user want to save a tiff image
-            set(fig1, 'PaperType', 'B4', 'PaperOrientation', 'landscape', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
-            print(fig1, path, '-dpdf', '-r600');
-        elseif filterindex == 4 % if the user want to save a png image
-            print(fig1, path, '-dpng', '-r600');
-        else
-            saveas(fig1, path); % saving the image according to the specified format by the user
-        end
-        close(h);
-        h = waitbar(100/100, 'Figure Saved!');
-        close(h);
-
-        close(fig1); % closing the new figure
     end
     
 end
@@ -2215,60 +2368,89 @@ No_wingbeats = str2double(get(handles.edit_no_wingbeats_to_plot, 'string')); % N
 usds = get(handles.radiobutton_usds, 'Value');
 dsus = get(handles.radiobutton_dsus, 'Value');
 Start_wingbeat = str2double(get(handles.edit_start_wingbeat, 'string')); % Wingbeat to start from
+body_motion_type_index = get(handles.popupmenu_motion, 'Value'); % Body motion type name index
+items = get(handles.popupmenu_motion, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+ni = str2double(get(handles.edit_ni, 'string')); % Initial velocity map in the sequence
+nf = str2double(get(handles.edit_nf, 'string')); % Final velocity map in the sequence
+p_cm = str2double(get(handles.edit_dp_cm, 'string')); % [pixel/cm] pixel to cm ratio
+dt = str2double(get(handles.edit_dt, 'string')); % [sec] dt between 2 velocity maps
+chord = str2double(get(handles.edit_chord, 'string')); % [m] body's characteristic length
+Uinf = str2double(get(handles.edit_Uinf, 'string')); % [m/sec] Free stream velocity
+density = str2double(get(handles.edit_density, 'string')); % [kg/m^3] Air density
+laser_dt = str2double(get(handles.edit_laser_dt, 'string')); % [sec] dt used by the laser between 2 PIV images
+wingspan = str2double(get(handles.edit_b, 'string')); % [m] body's wingspan that includes the body width
+body_l = str2double(get(handles.edit_bl, 'string')); % [m] body's length
+body_w = str2double(get(handles.edit_bw, 'string')); % [m] body's width
+weight = str2double(get(handles.edit_w, 'string')); % [kg] body's weight
+viscosity = str2double(get(handles.edit_viscosity, 'string')); % [Pa*sec] Air viscosity
+horizontal_cut = str2double(get(handles.edit_h_cut, 'string')); % Horizontal cut the user want to perform for the PIV velocity maps
+vertical_cut = str2double(get(handles.edit_v_cut, 'string')); % Vertical cut the user want to perform for the PIV velocity maps
 
-if dsus>usds
-    Wingbeats_start = DOWNSTROKE(Start_wingbeat);
-    Wingbeats_end = UPSTROKE(No_wingbeats);
-elseif usds>dsus
-    Wingbeats_start = UPSTROKE(Start_wingbeat);
-    Wingbeats_end = DOWNSTROKE(No_wingbeats);
+switch body_motion_type_name
+    case 'Stationary body'
+        Wingbeats_start = ni;
+        Wingbeats_end = nf;
+        if Wingbeats_end > nTime - 1 || Wingbeats_start < 2 || (Wingbeats_end-Wingbeats_start)<2
+            name = (['Please choose a legit range for the wake images! Should be from 2 to ', num2str(nTime-1), '...']);
+            msgbox(name,  'Error','error')
+            x_c=[]; time=[]; CIRC_NORM=[]; Cl_circ=[];
+        else
+            INPUTS = [laser_dt, p_cm, dt, chord, wingspan, body_l, body_w, weight,...
+            Uinf, density, viscosity, horizontal_cut, vertical_cut,...
+            Wingbeats_start, Wingbeats_end, body_motion_type_index];
+            set(handles.edit_ni, 'string', num2str(Wingbeats_start)); % Initial velocity map in the sequence
+            set(handles.edit_nf, 'string', num2str(Wingbeats_end)); % Final velocity map in the sequence
+            
+            vort_thresh = str2double(get(handles.edit_vort_threshold, 'string')); % Vorticity threshold
+             % X fraction of the max VORTICITY_NORM will be eliminated
+            if vort_thresh < 0 || vort_thresh > 100
+                name = ('Please choose a correct range of vorticity threshold! Should be from 1 to 100...');
+                msgbox(name,  'Error','error')
+                return;
+            end 
+            vort_thresh = vort_thresh/100; % precentage to ratio
+            VORTICITY_w_thresh = VORTICITY_NORM.*(Uinf./chord); % Calculating the vorticity of the wake with the treshold applied
+
+            % calculating the vertical momentum
+            [x_c, time, CIRC_NORM, Cl_circ] = lift_force(MAT_file, INPUTS, U, DUDX, DUDY, VORTICITY, VORTICITY_w_thresh, vort_thresh, MASK, LIFT_method); % Vertical momentum calculation algorithm
+        end
+    case 'Flapping wing'
+        if dsus>usds
+            Wingbeats_start = DOWNSTROKE(Start_wingbeat);
+            Wingbeats_end = UPSTROKE(No_wingbeats);
+        elseif usds>dsus
+            Wingbeats_start = UPSTROKE(Start_wingbeat);
+            Wingbeats_end = DOWNSTROKE(No_wingbeats);
+        end
+        
+        if Wingbeats_end > nTime - 1 || Wingbeats_start < 2 || (Wingbeats_end-Wingbeats_start)<2
+            name = (['Please choose a legit range for the wingbeat cycle! Should be from 2 to ', num2str(nTime-1), '...']);
+            msgbox(name,  'Error','error')
+            x_c=[]; time=[]; CIRC_NORM=[]; Cl_circ=[];
+        else
+            INPUTS = [laser_dt, p_cm, dt, chord, wingspan, body_l, body_w, weight,...
+            Uinf, density, viscosity, horizontal_cut, vertical_cut,...
+            Wingbeats_start, Wingbeats_end, body_motion_type_index];
+            set(handles.edit_ni, 'string', num2str(Wingbeats_start)); % Initial velocity map in the sequence
+            set(handles.edit_nf, 'string', num2str(Wingbeats_end)); % Final velocity map in the sequence
+
+            vort_thresh = str2double(get(handles.edit_vort_threshold, 'string')); % Vorticity threshold
+             % X fraction of the max VORTICITY_NORM will be eliminated
+            if vort_thresh < 0 || vort_thresh > 100
+                name = ('Please choose a correct range of vorticity threshold! Should be from 1 to 100...');
+                msgbox(name,  'Error','error')
+                return;
+            end 
+            vort_thresh = vort_thresh/100; % precentage to ratio
+            VORTICITY_w_thresh = VORTICITY_NORM.*(Uinf./chord); % Calculating the vorticity of the wake with the treshold applied
+
+            % calculating the vertical momentum
+            [x_c, time, CIRC_NORM, Cl_circ] = lift_force(MAT_file, INPUTS, U, DUDX, DUDY, VORTICITY, VORTICITY_w_thresh, vort_thresh, MASK, LIFT_method); % Vertical momentum calculation algorithm
+        end
 end
-
-if Wingbeats_end > nTime - 1 || Wingbeats_start < 2
-    name = (['Please choose a legit range for the wingbeat cycle! Should be from 2 to ', num2str(nTime-1), '...']);
-    msgbox(name,  'Error','error')
-else
-    p_cm = str2double(get(handles.edit_dp_cm, 'string')); % [pixel/cm] pixel to cm ratio
-    dt = str2double(get(handles.edit_dt, 'string')); % [sec] dt between 2 velocity maps
-    density = str2double(get(handles.edit_density, 'string')); % [kg/m^3] Air density
-    laser_dt = str2double(get(handles.edit_laser_dt, 'string')); % [sec] dt used by the laser between 2 PIV images
-    wingspan = str2double(get(handles.edit_b, 'string')); % [m] bird's wingspan that includes the body width
-    body_l = str2double(get(handles.edit_bl, 'string')); % [m] bird's body length
-    body_w = str2double(get(handles.edit_bw, 'string')); % [m] bird's body width
-    weight = str2double(get(handles.edit_w, 'string')); % [kg] bird's weight
-    viscosity = str2double(get(handles.edit_viscosity, 'string')); % [Pa*sec] Air viscosity
-    horizontal_cut = str2double(get(handles.edit_h_cut, 'string')); % Horizontal cut the user want to perform for the PIV velocity maps
-    vertical_cut = str2double(get(handles.edit_v_cut, 'string')); % Vertical cut the user want to perform for the PIV velocity maps
-    chord = str2double(get(handles.edit_chord, 'string')); % [m] bird's chord
-    Uinf = str2double(get(handles.edit_Uinf, 'string')); % [m/sec] Free stream velocity
-
-    INPUTS = [laser_dt, p_cm, dt, chord, wingspan, body_l, body_w, weight,...
-    Uinf, density, viscosity, horizontal_cut, vertical_cut,...
-    Wingbeats_start, Wingbeats_end];
-    set(handles.edit_ni, 'string', num2str(Wingbeats_start)); % Initial velocity map in the sequence
-    set(handles.edit_nf, 'string', num2str(Wingbeats_end)); % Final velocity map in the sequence
-
-    vort_thresh = str2double(get(handles.edit_vort_threshold, 'string')); % Vorticity threshold
-     % X fraction of the max VORTICITY_NORM will be eliminated
-    if vort_thresh < 0 || vort_thresh > 100
-        name = ('Please choose a correct range of vorticity threshold! Should be from 1 to 100...');
-        msgbox(name,  'Error','error')
-        return;
-    end 
-    vort_thresh = vort_thresh/100; % precentage to ratio
-    
-    VORTICITY_w_thresh = VORTICITY_NORM.*(Uinf./chord); % Calculating the vorticity of the wake with the treshold applied
-    
-    % calculating the vertical momentum
-    if LIFT_method<3
-        pushbutton_wake_gen_Callback(0, 0, handles);
-    end
-    [x_c, time, CIRC_NORM, Cl_circ] = lift_force(MAT_file, INPUTS, U, DUDX, DUDY, VORTICITY, VORTICITY_w_thresh, vort_thresh, MASK, LIFT_method); % Vertical momentum calculation algorithm
-    close(h)
-end
-    
-
-
+close(h)
+  
 
 
 function edit_x_c_gap_Callback(hObject, eventdata, handles)
@@ -2803,3 +2985,46 @@ function pushbutton_drag_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 plot_drag_Callback(hObject, eventdata, handles)
+
+
+% --- Executes on selection change in popupmenu_motion.
+function popupmenu_motion_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu_motion (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu_motion contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu_motion
+body_motion_type_index = get(hObject, 'Value'); % Body motion type name index
+items = get(hObject, 'String');
+body_motion_type_name = items{body_motion_type_index}; % Body motion type name
+switch body_motion_type_name
+    case 'Stationary body'
+        set(handles.radiobutton_dsus, 'Enable', 'off');
+        set(handles.radiobutton_usds, 'Enable', 'off');
+        set(handles.pushbutton_set_kinematics, 'Enable', 'off');
+        set(handles.text_start_wingbeat, 'Enable', 'off');
+        set(handles.text_no_wingbeats_to_plot, 'Enable', 'off');
+        set(handles.edit_start_wingbeat, 'Enable', 'off');
+        set(handles.edit_no_wingbeats_to_plot, 'Enable', 'off');
+    case 'Flapping wing'
+        set(handles.radiobutton_dsus, 'Enable', 'on');
+        set(handles.radiobutton_usds, 'Enable', 'on');
+        set(handles.pushbutton_set_kinematics, 'Enable', 'on');
+        set(handles.text_start_wingbeat, 'Enable', 'on');
+        set(handles.text_no_wingbeats_to_plot, 'Enable', 'on');
+        set(handles.edit_start_wingbeat, 'Enable', 'on');
+        set(handles.edit_no_wingbeats_to_plot, 'Enable', 'on');
+end
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu_motion_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu_motion (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
