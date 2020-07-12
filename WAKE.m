@@ -541,13 +541,15 @@ VORTICITY_NORM = (chord/Uinf).*(vorticity_threshold(VORTICITY, SWIRL, thresh_cri
 
 % Plot the final wake
 if flag == 1
-    axes(handles.axes1); % Focusing on Figure 1   
+    axes(handles.axes1); % Focusing on Figure 1  
+    labelsize = 18; % fontsize of the labels
+    axessize = 14; % fontsize of the axes    
 elseif flag == 2 % open a figure
     figure(1);
+    labelsize = 26; % fontsize of the labels
+    axessize = 21; % fontsize of the axes    
 end
-labelsize = 18; % fontsize of the labels
 fontname = 'Times New Roman'; % font name
-axessize = 14; % fontsize of the axes    
 x_axis1{1} = X_c; % x1 values
 x_axis1{2} = '$x/c$'; % x1 label
 y_axis{1} = Y_c; % y values
@@ -1670,10 +1672,10 @@ else
             % Plotting the drag variation with time
             fig1 = figure(1);
             ax1 = axes;
-            labelsize = 38; % fontsize of the labels
+            labelsize = 38;%50; % fontsize of the labels
             fontname = 'Times New Roman'; % font name
-            axessize = 25; % fontsize of the axes  
-            legendsize = 30; % fontsize of the legend
+            axessize = 25; %40; % fontsize of the axes  
+            legendsize = 30; %40; % fontsize of the legend
 
             switch x_axis
                 case 'x_c'
@@ -1719,19 +1721,27 @@ else
 
             ylabel(ax1, '$C_d$', 'interpreter', 'latex', 'fontsize', labelsize,...
                 'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
-            set(ax1, 'box', 'off');
+            set(ax1, 'box', 'off', 'linewidth', 3);
 
             set(fig1,'units','normalized','outerposition',[0 0 1 1]); % enlarging the figure to fullscreen 
             set(fig1, 'PaperType', 'B4', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
 
             % get the limits of the y axis
             y_lim = get(gca, 'ylim');
+%             y_lim = [-0.2 0.4];
+%             Y.tick = -0.2:0.1:0.4; %Y tick values
+%             set(ax1, 'ylim', [Y.tick(1) Y.tick(end)], 'ytick', Y.tick, 'YMinorTick', 'on'); 
+%             ax1.YAxis.MinorTickValues = [Y.tick(1):0.5*(Y.tick(2)-Y.tick(1)):Y.tick(end)];
 
             % set x limits
             x_axis_h1 = h1.XData;
             x_max = max(x_axis_h1);
             x_min = min(x_axis_h1);
-            set(gca, 'xlim', [x_min x_max]);  
+            set(ax1, 'xlim', [x_min x_max]); 
+%             X.tick = x_min:0.2:x_max; %Y tick values
+%             set(ax1, 'xtick', X.tick, 'XMinorTick', 'on'); 
+%             ax1.XAxis.MinorTickValues = [x_min:0.1:x_max];
+
 
             if strcmp(body_motion_type_name, 'Flapping wing')==1
                 % Get the x value of the different phases
@@ -2180,9 +2190,9 @@ else
             % Plotting the drag variation with time
             fig1 = figure(1);
             ax1 = axes;
-            labelsize = 38; % fontsize of the labels
+            labelsize = 38; %50 fontsize of the labels
             fontname = 'Times New Roman'; % font name
-            axessize = 25; % fontsize of the axes  
+            axessize = 25; %40; % fontsize of the axes  
 
             switch x_axis
                 case 'x_c'
@@ -2208,19 +2218,26 @@ else
 
             ylabel(ax1, '$\Delta C_{l_{circ}}$', 'interpreter', 'latex', 'fontsize', labelsize,...
                 'rotation', 0, 'horizontalAlignment', 'right', 'verticalAlignment', 'middle');
-            set(ax1, 'box', 'off');
+            set(ax1, 'box', 'off', 'linewidth', 3);
 
             set(fig1,'units','normalized','outerposition',[0 0 1 1]); % enlarging the figure to fullscreen 
             set(fig1, 'PaperType', 'B4', 'PaperPositionMode','auto'); % settings to prepare the figure for print in the right size
 
             % get the limits of the y axis
             y_lim = get(gca, 'ylim');
+%             y_lim = [-0.2 1.2];
+%             Y.tick = -0.2:0.2:1.2; %Y tick values
+%             set(ax1, 'ylim', [Y.tick(1) Y.tick(end)], 'ytick', Y.tick, 'YMinorTick', 'on'); 
+%             ax1.YAxis.MinorTickValues = [Y.tick(1):0.5*(Y.tick(2)-Y.tick(1)):Y.tick(end)];
 
             % set x limits
             x_axis_h1 = h1.XData;
             x_max = max(x_axis_h1);
             x_min = min(x_axis_h1);
-            set(gca, 'xlim', [x_min x_max]);    
+            set(ax1, 'xlim', [x_min x_max]); 
+%             X.tick = x_min:0.05:x_max; %Y tick values
+%             set(ax1, 'xtick', X.tick, 'XMinorTick', 'on'); 
+%             ax1.XAxis.MinorTickValues = [x_min:0.025:x_max];
             
             % Get the x value of the different phases
             if strcmp(body_motion_type_name, 'Flapping wing')==1
