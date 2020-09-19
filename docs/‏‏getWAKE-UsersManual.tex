@@ -94,8 +94,11 @@
 \textit{get}WAKE accepts the PIV wake data as .mat files extracted from the \href{https://github.com/OpenPIV/openpiv-spatial-analysis-toolbox}{OpenPIV spatial analysis toolbox}.
 \textit{get}WAKE allows the user to re-construct a full unsteady wake image from a set of PIV images recorded behind stationary/moving bluff bodies using a cross-correlation algorithm.
 The \textit{get}WAKE can also be used for estimation of drag and cumulative circulatory lift forces from the wake data, thus enabling the user to estimate the loads exerted on the body generating the wake. 
+
 To cite this software, please use the following:
-Ben-Gida, Hadar; Gurka, Roi; Liberzon, Alex (2020): OpenPIV - getWAKE Matlab Toolbox. \textit{figshare}. Software. \url{https://figshare.com/articles/OpenPIV_-_WAKE-GUI_Matlab_ToolBox/12331007}. The source code is available for download in the following GitHub page: \url{https://github.com/OpenPIV/getWAKE}. Contributions to the current version are more than welcome.
+Ben-Gida, H., Gurka, R. and Liberzon, A. (2020) `OpenPIV-Matlab -- An open-source software for particle image velocimetry; test case: birds' aerodynamics', SoftwareX, 12, p. 100585. doi: \url{https://doi.org/10.1016/j.softx.2020.100585}.
+
+The source code is available for download in the following GitHub page: \url{https://github.com/OpenPIV/getWAKE}. Contributions to the current version are more than welcome.
 
 The aim of this document is to deliver a detailed description of the \textit{get}WAKE Matlab Toolbox, along with a tutorial. The PIV data used as an example in the tutorial presented here was extracted from wake measurements behind a freely flying Starling (\textit{Sturnus vulgaris}) in a wind-tunnel \cite{Ben-Gida2013,Stalnov2015,Nafi2020}. 
 
@@ -504,7 +507,7 @@ When analyzing these vortical structures in the near wake of flying birds, one c
 The estimation of increment in the time-dependent lift throughout the wake is evaluated here from the PIV velocity fields by utilizing Wu's viscous flow approach \cite{Wu1981}, which was later expressed by Panda and Zaman \cite{Panda1994}.
 Assuming two-dimensional, incompressible flow and neglecting the added mass term, the time-dependent circulatory lift force can be expressed as \cite{Panda1994}:
 \begin{equation}
-L_{circ}(t) = \underbrace{\rho \frac{\mathrm{d}}{\mathrm{d}t}\iint_Ax\omega_z(t)\mathrm{d}x\mathrm{d}y}_{\text{x-moment of the vorticity field}} + \underbrace{\rho U_\infty \int_0^t \int_0^h\nu \left( \frac{\partial^2u(t)}{\partial x^2} + \frac{\partial^2u(t)}{\partial y^2} \right)\mathrm{d}y \mathrm{d}t}_{\text{Diffusion contribution}}
+L_{circ}(t) = \underbrace{\rho \frac{\mathrm{d}}{\mathrm{d}t}\iint_Ax\omega_z(t)\mathrm{d}x\mathrm{d}y}_{x\text{-moment of the vorticity field}} + \underbrace{\rho U_\infty \int_0^t \int_0^h\nu \left( \frac{\partial^2u(t)}{\partial x^2} + \frac{\partial^2u(t)}{\partial y^2} \right)\mathrm{d}y \mathrm{d}t}_{\text{Diffusion contribution}}
 \label{eq:inst_Lift}
 \end{equation}
 where $x$ and $y$ are the Cartesian coordinates defining the wake flow plane, with $x$ axis in the freestream direction. In the above equation, the first integral from left is the first $x$-moment of the vorticity field ($A$) in the wake, with $\omega_z(t)$ as the instantaneous spanwise vorticity field ($=\partial v/\partial x - \partial u/\partial y$) that is evaluated directly from the PIV data using a least squares differentiation scheme. The second integral from left is the contribution from the viscous term (diffusion), with $\nu$ as the kinematic viscosity and $h$ denoting the vertical extent of the computed velocity field in the wake. This term may be negligible in the far wake, yet, here we take it into account for near-wake effects. $\rho$ is the fluid density.
@@ -554,7 +557,7 @@ All the above vectors, representing each instantaneous velocity map, are then in
 
 In the option entitled \textbf{Panda \& Zaman (1994), based on generated wake (threshold applied)}, the vorticity flux $\zeta(t)$ defined by \Cref{eq:zeta_vs_time} is estimated from the \textbf{complete wake image reconstructed by the user} behind the source; after applying a threshold on the vorticity contours. 
 For the complete reconstructed wake image, the convection velocity is approximated as the freestream velocity, $u_c\approx U_\infty$. The spanwise vorticity field array is taken directly from the complete reconstructed wake (after the threshold selected by the user is applied), $\omega_z(x,y)$, where $x$-direction and time $t$ are interchangeable by applying $\mathrm{d}t=U_\infty\mathrm{d}x$.
-The second order derivatives of $u$ are computed using a least squares differentiation scheme directly from the complete reconstructed wake, $\partial^2u(x,y)/\partial x^2$ and $\partial^2u(x,y)/\partial y^2$, where $x$-direction and time $t$ are interchangeable by applying $\mathrm{d}t=U_\infty\mathrm{d}x$.
+The second order derivatives of $u$ are computed using a least squares differentiation scheme directly from the complete reconstructed wake, $\partial^2u(x,y)/\partial x^2$ and $\partial^2u(x,y)/\partial y^2$.
 All the above arrays, representing the full reconstructed wake map, are then integrated over the $y$-direction (at each $x$ location) to yield the vorticity flux $\zeta(t)$, as presented in \Cref{eq:zeta_vs_time}, and the cumulative circulatory lift coefficient in the wake (see \Cref{eq:dCl-circ}).
 
 The option entitled \textbf{Panda \& Zaman (1994), based on generated wake} is identical to the former one and based on the complete wake image reconstructed by the user, but without applying the threshold on the processed vorticity field. 
