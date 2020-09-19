@@ -16,7 +16,7 @@ What is it?
 
 How to cite this work?
 ------------
-Ben-Gida, H., Gurka, R. and Liberzon, A. (2020) `OpenPIV-Matlab - An open-source software for particle image velocimetry; test case: birds' aerodynamics', SoftwareX, 12, p. 100585. doi: \url{https://doi.org/10.1016/j.softx.2020.100585}.
+Ben-Gida, H., Gurka, R. and Liberzon, A. (2020) `OpenPIV-Matlab - An open-source software for particle image velocimetry; test case: birds' aerodynamics', SoftwareX, 12, p. 100585. doi: https://doi.org/10.1016/j.softx.2020.100585.
 
 
 User's Manual
