@@ -19,18 +19,17 @@ switch thresh_criterion
             vort = reshape(tmp, nRows, nColumns);
             
         elseif MASK(1) == 1 && threshold>0 % Regular masking
-            S = swirl;
-            for i=1:nRows
-                for j=1:nColumns
-                    if abs(S(i,j))<=threshold*max(abs(S(:)))
-                        vorticity(i,j)=0;
-                    end;
-                end;
-            end;
+            P = swirl;
+            P_max = max(max(abs(P)));
+            P_thres = threshold*P_max;
+            vorticity(abs(P)<=P_thres) = 0;
             vort = vorticity;
+            
         else
             vort = vorticity;
-        end;
+            
+        end
+        
         
         case 'Vorticity'
         if MASK(1) == 0 && threshold>0% Gaussian masking
@@ -48,16 +47,15 @@ switch thresh_criterion
             vort = reshape(tmp, nRows, nColumns);
 
         elseif MASK(1) == 1 && threshold>0% Regular masking
-            V = vorticity;
-            for i=1:nRows
-                for j=1:nColumns
-                    if abs(V(i,j))<=threshold*max(abs(V(:)))
-                        vorticity(i,j)=0;
-                    end;
-                end;
-            end;
+            P = vorticity;
+            P_max = max(max(abs(P)));
+            P_thres = threshold*P_max;
+            vorticity(abs(P)<=P_thres) = 0;
             vort = vorticity;
+            
         else
             vort = vorticity;
-        end;
-end;
+            
+        end
+        
+end
